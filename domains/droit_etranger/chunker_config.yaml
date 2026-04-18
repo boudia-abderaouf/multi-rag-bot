@@ -1,0 +1,34 @@
+pattern: "^(Art(?:icle)?\\.?\\s+[LRD]\\d{3,4}-\\d{1,3}(?:-\\d{1,3})?)"
+  example: "Art. L111-1"
+ 
+# --- Séparateurs de structure hiérarchique ---
+# Utilisés pour enrichir les métadonnées de chaque chunk
+hierarchy:
+  - level: 1
+    label: LIVRE
+    pattern: "^LIVRE\\s+(\\w+)"
+  - level: 2
+    label: TITRE
+    pattern: "^TITRE\\s+(\\w+)"
+  - level: 3
+    label: CHAPITRE
+    pattern: "^CHAPITRE\\s+(\\w+)"
+  - level: 4
+    label: SECTION
+    pattern: "^Section\\s+(\\d+)"
+ 
+# --- Taille des chunks ---
+chunk_size: 800          # tokens max par chunk
+chunk_overlap: 100       # overlap pour ne pas couper le contexte entre articles liés
+min_chunk_size: 50       # on ignore les articles trop courts (abrogés partiellement, renvois)
+ 
+# --- Métadonnées extraites automatiquement par chunk ---
+# Ces champs seront stockés dans Qdrant pour le filtrage
+extract_metadata:
+  - article_id          # ex: "L111-1"
+  - article_type        # L / R / D
+  - livre               # ex: "LIVRE I"
+  - titre               # ex: "TITRE II"
+  - chapitre            # ex: "CHAPITRE III"
+  - url_legifrance      # construit dynamiquement depuis l'article_id
+ 

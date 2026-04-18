@@ -1,0 +1,52 @@
+# Synonymes et variantes pour le droit des étrangers
+# Format : terme_principal, variante_1, variante_2, ...
+# Utilisé pour le query expansion : si l'utilisateur écrit un alias,
+# la recherche inclut aussi le terme officiel du CESEDA.
+ 
+# --- Titres et documents de séjour ---
+titre de séjour, carte de séjour, permis de séjour, autorisation de séjour, récépissé de séjour
+carte de résident, carte résident, titre de résident permanent
+visa long séjour, VLS, visa D
+autorisation provisoire de séjour, APS
+document de circulation, DCEM
+ 
+# --- Procédures d'asile ---
+demande d'asile, protection internationale, demande de refuge, demander l'asile
+statut de réfugié, reconnaissance réfugié, convention de Genève
+protection subsidiaire, protection complémentaire
+OFPRA, Office français de protection des réfugiés et apatrides
+CNDA, Cour nationale du droit d'asile, cour d'appel de l'asile
+demandeur d'asile, sollicitant d'asile
+ 
+# --- Éloignement et reconduite ---
+OQTF, obligation de quitter le territoire français, obligation de quitter le territoire
+reconduite à la frontière, expulsion, éloignement, renvoi
+rétention, centre de rétention administrative, CRA, local de rétention
+interdiction de retour sur le territoire, IRTF
+interdiction du territoire français, ITF
+laissez-passer consulaire, LPC
+ 
+# --- Régularisation ---
+régularisation, admission exceptionnelle au séjour, AES
+régularisation par le travail, régularisation par la vie privée
+10 ans de présence, régularisation 10 ans
+liens personnels et familiaux
+ 
+# --- Regroupement familial ---
+regroupement familial, rejoindre sa famille, réunification familiale
+conjoint étranger, époux étranger, mariage avec étranger
+parent d'enfant français, père/mère d'enfant français
+ 
+# --- Nationalité et naturalisation ---
+naturalisation, demande de nationalité française, acquisition nationalité
+déclaration de nationalité, nationalité par mariage
+apatride, sans nationalité, heimatlos
+ 
+# --- Mineurs ---
+mineur isolé étranger, MIE, mineur non accompagné, MNA
+tutelle mineur étranger, administrateur ad hoc
+ 
+# --- Travail ---
+autorisation de travail, permis de travail
+carte talent, passeport talent
+travailleur saisonnier, travailleur détaché
