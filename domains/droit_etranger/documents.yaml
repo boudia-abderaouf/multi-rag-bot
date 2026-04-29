@@ -1,0 +1,48 @@
+documents:
+
+  - id: ceseda
+    name: "Code de l'entrée et du séjour des étrangers et du droit d'asile (CESEDA)"
+    source_type: pdf_url
+    url: "https://codes.droit.org/PDF/Code%20de%20l'entr%C3%A9e%20et%20du%20s%C3%A9jour%20des%20%C3%A9trangers%20et%20du%20droit%20d'asile.pdf"
+    loader: pdf_url_loader
+    chunker: article_chunker
+    collection: droit_etranger   # nom de la collection dans Qdrant
+    metadata:
+      domaine: droit_etranger
+      type: code_legislatif
+      langue: fr
+      source_officielle: true
+      url_legifrance: "https://www.legifrance.gouv.fr/codes/id/LEGITEXT000006070158/"
+    refresh_policy:
+      strategy: periodic           # on re-télécharge et ré-indexe périodiquement
+      frequency_days: 30           
+
+  # --- Exemples de documents à ajouter plus tard ---
+
+  # - id: convention_geneve
+  #   name: "Convention de Genève du 28 juillet 1951 relative au statut des réfugiés"
+  #   source_type: pdf_local
+  #   path: "./data/raw/convention_geneve_1951.pdf"
+  #   loader: pdf_local_loader
+  #   chunker: article_chunker
+  #   collection: droit_etranger
+  #   metadata:
+  #     domaine: droit_etranger
+  #     type: traite_international
+  #     langue: fr
+  #     source_officielle: true
+  #   refresh_policy:
+  #     strategy: manual            # document stable, mise à jour manuelle uniquement
+
+  # - id: circulaire_valls_2012
+  #   name: "Circulaire Valls du 28 novembre 2012 - Admission exceptionnelle au séjour"
+  #   source_type: pdf_url
+  #   url: "https://www.immigration.interieur.gouv.fr/..."
+  #   loader: pdf_url_loader
+  #   chunker: recursive_chunker    # pas d'articles numérotés → chunker générique
+  #   collection: droit_etranger
+  #   metadata:
+  #     domaine: droit_etranger
+  #     type: circulaire
+  #     langue: fr
+  #     source_officielle: false    # interprétation administrative, pas de loi
