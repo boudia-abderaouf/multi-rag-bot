@@ -3,17 +3,17 @@ from pydantic_settings import BaseSettings
 
 
 class Settings(BaseSettings):
-    # Répertoire racine des données (PDFs téléchargés)
-    # Local  : ./data  (relatif au projet)
-    # Prod   : /app/data  (volume Docker monté)
     DATA_DIR: Path = Path("./data")
-
-    # Timeout HTTP pour le téléchargement des PDFs (secondes)
     DOWNLOAD_TIMEOUT: int = 120
+    FORCE_REDOWNLOAD: bool = False
+    QDRANT_URL: str = "http://localhost:6333"
+    OPENAI_API_KEY: str = ""
 
-    class Config:
-        env_file = ".env"
-        env_file_encoding = "utf-8"
+    model_config = {
+        "env_file": ".env",
+        "env_file_encoding": "utf-8",
+        "extra": "ignore",
+    }
 
     @property
     def raw_dir(self) -> Path:
