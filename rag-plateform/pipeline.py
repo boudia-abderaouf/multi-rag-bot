@@ -1,22 +1,25 @@
+import json
 import logging
 from pathlib import Path
 
 import yaml
 
+from config.settings import settings
 from ingestion.loaders.pdf_url_loader import PdfUrlLoader
+from ingestion.chunkers.article_chunker import ArticleChunker
 
 logger = logging.getLogger(__name__)
 
-# Mapping source_type → classe loader
 LOADERS = {
     "pdf_url": PdfUrlLoader,
-    # "pdf_local": PdfLocalLoader,   # à ajouter plus tard
-    # "html":      HtmlLoader,       # à ajouter plus tard
+}
+
+CHUNKERS = {
+    "article_chunker": ArticleChunker,
 }
 
 
 def load_documents_config(domain: str) -> list[dict]:
-    """Lit le documents.yaml du domaine demandé."""
     config_path = Path(f"domains/{domain}/documents.yaml")
     if not config_path.exists():
         raise FileNotFoundError(f"Aucun documents.yaml trouvé pour le domaine '{domain}' ({config_path})")
@@ -28,10 +31,6 @@ def load_documents_config(domain: str) -> list[dict]:
 
 
 def run_ingestion(domain: str) -> None:
-    """
-    Point d'entrée principal du pipeline d'ingestion.
-    Pour l'instant : télécharge et sauvegarde les PDFs du domaine.
-    """
     logger.info(f"=== Début de l'ingestion pour le domaine : {domain} ===")
 
     documents = load_documents_config(domain)
@@ -42,7 +41,9 @@ def run_ingestion(domain: str) -> None:
     for doc in documents:
         doc_id = doc["id"]
         source_type = doc.get("source_type")
+        chunker_name = doc.get("chunker")
 
+        # --- Étape 1 : Load ---
         loader_class = LOADERS.get(source_type)
         if loader_class is None:
             logger.warning(f"[{doc_id}] source_type inconnu '{source_type}', document ignoré.")
@@ -50,9 +51,31 @@ def run_ingestion(domain: str) -> None:
 
         try:
             loader = loader_class(doc)
-            path = loader.load()
-            logger.info(f"[{doc_id}] ✓ Fichier prêt : {path}")
+            pdf_path = loader.load()
+            logger.info(f"[{doc_id}] ✓ PDF prêt : {pdf_path}")
         except Exception as e:
             logger.error(f"[{doc_id}] ✗ Échec du chargement : {e}")
+            continue
+
+        # --- Étape 2 : Chunk ---
+        chunker_class = CHUNKERS.get(chunker_name)
+        if chunker_class is None:
+            logger.warning(f"[{doc_id}] chunker inconnu '{chunker_name}', chunking ignoré.")
+            continue
+
+        config_path = Path(f"domains/{domain}/chunker_config.yaml")
+        chunker = chunker_class(config_path=config_path, doc_metadata=doc.get("metadata", {}))
+
+        output_path = settings.chunks_dir / f"{doc_id}.jsonl"
+        total = 0
+
+        try:
+            with output_path.open("w", encoding="utf-8") as f:
+                for chunk in chunker.chunk(pdf_path):
+                    f.write(json.dumps({"text": chunk.text, "metadata": chunk.metadata}, ensure_ascii=False) + "\n")
+                    total += 1
+            logger.info(f"[{doc_id}] ✓ {total} chunks sauvegardés → {output_path}")
+        except Exception as e:
+            logger.error(f"[{doc_id}] ✗ Échec du chunking : {e}")
 
     logger.info(f"=== Ingestion terminée pour le domaine : {domain} ===")

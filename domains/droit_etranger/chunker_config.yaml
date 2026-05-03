@@ -1,19 +1,19 @@
-article_pattern: "^(Art(?:icle)?\\.?\\s+[LRD]\\d{3,4}-\\d{1,3}(?:-\\d{1,3})?)"
+article_pattern: "^\"?\\s*(Art(?:icle)?\\.?\\s+[LRD]\\.?\\s*\\d{3,4}-\\d{1,3}(?:-\\d{1,3})?)"
 
 # --- Séparateurs de structure hiérarchique ---
 hierarchy:
   - level: 1
     label: LIVRE
-    pattern: "^LIVRE\\s+(\\w+)"
+    pattern: "^Livre\\s+(.+)"
   - level: 2
     label: TITRE
-    pattern: "^TITRE\\s+(\\w+)"
+    pattern: "^Titre\\s+(.+)"
   - level: 3
     label: CHAPITRE
-    pattern: "^CHAPITRE\\s+(\\w+)"
+    pattern: "^Chapitre\\s+(.+)"
   - level: 4
     label: SECTION
-    pattern: "^Section\\s+(\\d+)"
+    pattern: "^Section\\s+(.+)"
 
 # --- Taille des chunks ---
 chunk_size: 800

@@ -17,8 +17,13 @@ class Settings(BaseSettings):
 
     @property
     def raw_dir(self) -> Path:
-        """Dossier où sont stockés les PDFs bruts téléchargés."""
         path = self.DATA_DIR / "raw"
+        path.mkdir(parents=True, exist_ok=True)
+        return path
+
+    @property
+    def chunks_dir(self) -> Path:
+        path = self.DATA_DIR / "chunks"
         path.mkdir(parents=True, exist_ok=True)
         return path
 

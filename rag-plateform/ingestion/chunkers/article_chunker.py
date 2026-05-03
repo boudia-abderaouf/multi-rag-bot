@@ -38,7 +38,7 @@ class ArticleChunker(BaseChunker):
 
         for page_num, page in enumerate(doc, start=1):
             for line in page.get_text().splitlines():
-                line = line.strip()
+                line = line.strip().lstrip('"').strip()
                 if not line:
                     continue
 
