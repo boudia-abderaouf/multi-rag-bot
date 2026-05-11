@@ -23,18 +23,24 @@ def main():
     parser.add_argument(
         "--collection",
         default=None,
-        help="Collection Qdrant a interroger. Par defaut, reutilise le nom du domaine.",
+        help="Collection Qdrant a interroger. Par defaut, utilise les collections configurees pour le domaine.",
     )
     parser.add_argument("--limit", type=int, default=5, help="Nombre de chunks a retourner")
     args = parser.parse_args()
 
     retriever = Retriever()
-    collection_name = args.collection or args.domain
-    hits = retriever.retrieve(
-        collection_name=collection_name,
-        query=args.question,
-        limit=args.limit,
-    )
+    if args.collection:
+        hits = retriever.retrieve(
+            collection_name=args.collection,
+            query=args.question,
+            limit=args.limit,
+        )
+    else:
+        hits = retriever.retrieve_for_domain(
+            domain=args.domain,
+            query=args.question,
+            limit=args.limit,
+        )
     prompt = retriever.build_prompt(domain=args.domain, question=args.question, hits=hits)
 
     print("=== HITS ===")

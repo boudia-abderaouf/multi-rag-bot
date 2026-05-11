@@ -75,6 +75,7 @@ OPENAI_API_KEY=
 QDRANT_URL=http://localhost:6333
 QDRANT_API_KEY=
 EMBEDDING_MODEL=text-embedding-3-small
+RESPONSE_MODEL=gpt-4.1-mini
 EMBEDDING_BATCH_SIZE=32
 FORCE_REDOWNLOAD=false
 ```
@@ -154,6 +155,7 @@ La page permet de :
 - choisir le domaine
 - saisir une question
 - lancer le retrieval
+- generer une reponse a partir du prompt RAG
 - voir les hits retournes et le prompt RAG genere
 
 ## Domaine actif

@@ -13,8 +13,8 @@ from ui_app import create_app, list_domains, run_query
 
 
 class FakeRetriever:
-    def retrieve(self, *, collection_name, query, limit):
-        self.collection_name = collection_name
+    def retrieve_for_domain(self, *, domain, query, limit):
+        self.domain = domain
         self.query = query
         self.limit = limit
         return [
@@ -33,6 +33,14 @@ class FakeRetriever:
         return f"Domaine={domain}\nQuestion={question}\nHits={len(hits)}"
 
 
+class FakeResponder:
+    def is_available(self):
+        return True
+
+    def answer(self, prompt):
+        return f"Reponse testee depuis: {prompt.splitlines()[0]}"
+
+
 class UiAppTests(unittest.TestCase):
     def test_list_domains_returns_configured_domain(self):
         domains = list_domains(PROJECT_ROOT / "domains")
@@ -44,13 +52,19 @@ class UiAppTests(unittest.TestCase):
             question="Quels sont les regles ?",
             limit=3,
             retriever_factory=FakeRetriever,
+            responder_factory=FakeResponder,
         )
 
         self.assertEqual(result["hits"][0]["article_id"], "Art. L111-1")
+        self.assertIn("Reponse testee", result["answer"])
         self.assertIn("Question=Quels sont les regles ?", result["prompt"])
 
     def test_post_request_renders_results(self):
-        app = create_app(retriever_factory=FakeRetriever, domains_dir=PROJECT_ROOT / "domains")
+        app = create_app(
+            retriever_factory=FakeRetriever,
+            responder_factory=FakeResponder,
+            domains_dir=PROJECT_ROOT / "domains",
+        )
         body = "domain=droit_etranger&question=Question+demo&limit=2".encode("utf-8")
         captured = {}
 
@@ -72,4 +86,5 @@ class UiAppTests(unittest.TestCase):
         self.assertEqual(captured["status"], "200 OK")
         self.assertIn("Question demo", response)
         self.assertIn("Art. L111-1", response)
+        self.assertIn("Reponse", response)
         self.assertIn("Prompt RAG", response)

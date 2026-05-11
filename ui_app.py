@@ -12,10 +12,17 @@ PROJECT_ROOT = Path(__file__).resolve().parent
 sys.path.insert(0, str(PROJECT_ROOT))
 sys.path.insert(0, str(PROJECT_ROOT / "rag-plateform"))
 
+from config.settings import settings
+from generation.openai_responder import OpenAIResponder
 from retrieval.retriever import Retriever
 
 
 AppFactory = Callable[[], Retriever]
+ResponderFactory = Callable[[], OpenAIResponder]
+
+
+def _build_responder() -> OpenAIResponder:
+    return OpenAIResponder.from_settings(settings)
 
 
 def list_domains(domains_dir: Path | None = None) -> list[str]:
@@ -36,6 +43,7 @@ def run_query(
     question: str,
     limit: int,
     retriever_factory: AppFactory = Retriever,
+    responder_factory: ResponderFactory = _build_responder,
 ) -> dict[str, Any]:
     if not question.strip():
         raise ValueError("La question est obligatoire.")
@@ -43,14 +51,27 @@ def run_query(
         raise ValueError("La limite doit etre superieure a 0.")
 
     retriever = retriever_factory()
-    hits = retriever.retrieve(
-        collection_name=domain,
+    hits = retriever.retrieve_for_domain(
+        domain=domain,
         query=question.strip(),
         limit=limit,
     )
     prompt = retriever.build_prompt(domain=domain, question=question.strip(), hits=hits)
+    responder = responder_factory()
+    answer = None
+    answer_error = None
+
+    try:
+        if responder.is_available():
+            answer = responder.answer(prompt)
+        else:
+            answer_error = "Generation indisponible : verifie OPENAI_API_KEY, RESPONSE_MODEL et la dependance openai."
+    except Exception as exc:
+        answer_error = f"Echec de la generation : {exc}"
 
     return {
+        "answer": answer,
+        "answer_error": answer_error,
         "prompt": prompt,
         "hits": [
             {
@@ -111,7 +132,30 @@ def render_page(
     error_block = f"<div class='notice error'>{html.escape(error)}</div>" if error else ""
     result_block = ""
     if result is not None:
+        answer = result.get("answer")
+        answer_error = result.get("answer_error")
+        answer_block = ""
+        if answer:
+            answer_block = f"""
+        <section class="panel">
+          <div class="panel-head">
+            <h2>Reponse</h2>
+          </div>
+          <div class="answer">{html.escape(answer)}</div>
+        </section>
+        """
+        elif answer_error:
+            answer_block = f"""
+        <section class="panel">
+          <div class="panel-head">
+            <h2>Reponse</h2>
+          </div>
+          <div class="notice error inline">{html.escape(answer_error)}</div>
+        </section>
+        """
+
         result_block = f"""
+        {answer_block}
         <section class="panel">
           <div class="panel-head">
             <h2>Hits</h2>
@@ -264,6 +308,10 @@ def render_page(
         border-radius: 16px;
       }}
 
+      .notice.inline {{
+        margin-top: 16px;
+      }}
+
       .error {{
         color: var(--danger);
         background: rgba(244, 63, 94, 0.08);
@@ -320,6 +368,16 @@ def render_page(
         white-space: pre-wrap;
       }}
 
+      .answer {{
+        margin-top: 16px;
+        padding: 18px;
+        border-radius: 18px;
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(243, 250, 248, 0.96));
+        border: 1px solid rgba(15, 118, 110, 0.14);
+        line-height: 1.7;
+        white-space: pre-wrap;
+      }}
+
       @media (max-width: 640px) {{
         .shell {{
           width: min(100% - 20px, 1080px);
@@ -341,8 +399,8 @@ def render_page(
         <span class="eyebrow">Local retrieval UI</span>
         <h1>Pose ta question au RAG.</h1>
         <p>
-          Cette interface locale envoie une question au retriever existant, affiche les hits Qdrant
-          puis montre le prompt RAG reconstruit pour le domaine choisi.
+          Cette interface locale envoie une question au retriever existant, affiche les hits Qdrant,
+          genere une reponse a partir du prompt RAG puis montre le prompt reconstruit pour le domaine choisi.
         </p>
       </section>
 
@@ -389,6 +447,7 @@ def _read_form(environ: dict[str, Any]) -> dict[str, str]:
 def create_app(
     *,
     retriever_factory: AppFactory = Retriever,
+    responder_factory: ResponderFactory = _build_responder,
     domains_dir: Path | None = None,
 ):
     def application(environ: dict[str, Any], start_response: Callable[..., Any]):
@@ -415,6 +474,7 @@ def create_app(
                     question=question,
                     limit=limit,
                     retriever_factory=retriever_factory,
+                    responder_factory=responder_factory,
                 )
             except Exception as exc:
                 error = str(exc)

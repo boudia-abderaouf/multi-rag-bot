@@ -4,12 +4,9 @@ import logging
 from dataclasses import dataclass
 from typing import Any, Iterable
 
-logger = logging.getLogger(__name__)
+from openai_client import build_openai_client
 
-try:
-    from openai import OpenAI
-except ImportError:  # pragma: no cover - depends on optional dependency
-    OpenAI = None
+logger = logging.getLogger(__name__)
 
 
 @dataclass
@@ -21,8 +18,8 @@ class OpenAIEmbedder:
     client: Any = None
 
     def __post_init__(self):
-        if self.client is None and self.api_key and OpenAI is not None:
-            self.client = OpenAI(api_key=self.api_key)
+        if self.client is None:
+            self.client = build_openai_client(self.api_key)
 
     @classmethod
     def from_settings(cls, settings) -> "OpenAIEmbedder":

@@ -5,6 +5,8 @@ import uuid
 from dataclasses import dataclass
 from typing import Any
 
+from ssl_env import ensure_valid_ca_bundle
+
 logger = logging.getLogger(__name__)
 
 try:
@@ -27,6 +29,7 @@ class QdrantVectorStore:
         self.api_key = api_key
         self.client = client
         if self.client is None and QdrantClient is not None and url:
+            ensure_valid_ca_bundle()
             kwargs = {"url": url}
             if api_key:
                 kwargs["api_key"] = api_key
@@ -49,6 +52,15 @@ class QdrantVectorStore:
                 ),
             )
             logger.info(f"[{collection_name}] Collection Qdrant creee ({vector_size} dimensions).")
+        self.ensure_payload_indexes(collection_name)
+
+    def ensure_payload_indexes(self, collection_name: str) -> None:
+        self.client.create_payload_index(
+            collection_name=collection_name,
+            field_name="doc_id",
+            field_schema=models.PayloadSchemaType.KEYWORD,
+            wait=True,
+        )
 
     def replace_document(
         self,
@@ -92,20 +104,45 @@ class QdrantVectorStore:
     def delete_document(self, *, collection_name: str, doc_id: str) -> None:
         if not self.client.collection_exists(collection_name):
             return
-        self.client.delete(
-            collection_name=collection_name,
-            wait=True,
-            points_selector=models.FilterSelector(
-                filter=models.Filter(
-                    must=[
-                        models.FieldCondition(
-                            key="doc_id",
-                            match=models.MatchValue(value=doc_id),
-                        )
-                    ]
-                )
-            ),
-        )
+        self.ensure_payload_indexes(collection_name)
+        try:
+            self.client.delete(
+                collection_name=collection_name,
+                wait=True,
+                points_selector=models.FilterSelector(
+                    filter=models.Filter(
+                        must=[
+                            models.FieldCondition(
+                                key="doc_id",
+                                match=models.MatchValue(value=doc_id),
+                            )
+                        ]
+                    )
+                ),
+            )
+        except Exception as exc:
+            # Some hosted Qdrant collections may predate the payload index.
+            # Recreating the index and retrying keeps re-indexing idempotent.
+            if "Index required but not found" not in str(exc):
+                raise
+            logger.warning(
+                f"[{collection_name}] Index doc_id manquant pendant la suppression, recreation puis nouvelle tentative."
+            )
+            self.ensure_payload_indexes(collection_name)
+            self.client.delete(
+                collection_name=collection_name,
+                wait=True,
+                points_selector=models.FilterSelector(
+                    filter=models.Filter(
+                        must=[
+                            models.FieldCondition(
+                                key="doc_id",
+                                match=models.MatchValue(value=doc_id),
+                            )
+                        ]
+                    )
+                ),
+            )
 
     def query(
         self,

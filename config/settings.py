@@ -73,6 +73,7 @@ class Settings(BaseSettings):
     EMBEDDING_MODEL: str = "text-embedding-3-small"
     EMBEDDING_BATCH_SIZE: int = 32
     EMBEDDING_DIMENSIONS: int | None = None
+    RESPONSE_MODEL: str = "gpt-4.1-mini"
 
     model_config = {
         "env_file": ".env",
