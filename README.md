@@ -63,6 +63,7 @@ scripts/
 webapp/
   index.html
   login/
+  documents/
   docs/
   chat/
   assets/
@@ -215,7 +216,7 @@ http://127.0.0.1:4173
 Le shell front :
 
 - appelle `GET /health`
-- expose des routes/pieces pretes pour `login`, `docs` et `chat`
+- expose des routes/pieces pretes pour `login`, `documents`, `docs` et `chat`
 - reste separe de l'API, tout en pointant vers `http://127.0.0.1:8001` par defaut
 
 Tu peux changer la cible API dans `webapp/assets/config.js`.
