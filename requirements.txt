@@ -1,4 +1,5 @@
 # --- Ingestion ---
+fastapi>=0.115.0
 httpx>=0.27.0
 pyyaml>=6.0
 pydantic-settings>=2.0
@@ -11,3 +12,6 @@ openai>=1.0.0
 
 # --- Vector store ---
 qdrant-client>=1.9.0
+
+# --- API / ASGI ---
+uvicorn>=0.30.0

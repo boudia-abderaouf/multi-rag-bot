@@ -2,15 +2,16 @@ from __future__ import annotations
 
 import html
 import io
-import sys
 from pathlib import Path
 from typing import Any, Callable
 from urllib.parse import parse_qs
 from wsgiref.simple_server import make_server
 
+from project_bootstrap import configure_project_path
+
+configure_project_path()
+
 PROJECT_ROOT = Path(__file__).resolve().parent
-sys.path.insert(0, str(PROJECT_ROOT))
-sys.path.insert(0, str(PROJECT_ROOT / "rag-plateform"))
 
 from config.settings import settings
 from generation.openai_responder import OpenAIResponder

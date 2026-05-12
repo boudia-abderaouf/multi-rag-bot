@@ -67,6 +67,7 @@ class Settings(BaseSettings):
     DATA_DIR: Path = Path("./data")
     DOWNLOAD_TIMEOUT: int = 120
     FORCE_REDOWNLOAD: bool = False
+    WEBAPP_CORS_ORIGINS: str = "http://127.0.0.1:4173,http://localhost:4173"
     QDRANT_URL: str = "http://localhost:6333"
     QDRANT_API_KEY: str = ""
     OPENAI_API_KEY: str = ""
@@ -102,6 +103,14 @@ class Settings(BaseSettings):
         path = self.data_dir / "chunks"
         path.mkdir(parents=True, exist_ok=True)
         return path
+
+    @property
+    def webapp_cors_origins(self) -> list[str]:
+        return [
+            origin.strip()
+            for origin in self.WEBAPP_CORS_ORIGINS.split(",")
+            if origin.strip()
+        ]
 
 
 settings = Settings()

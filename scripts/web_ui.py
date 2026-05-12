@@ -1,9 +1,7 @@
 import argparse
-import sys
-from pathlib import Path
+from project_bootstrap import configure_project_path
 
-PROJECT_ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(PROJECT_ROOT))
+configure_project_path()
 
 from ui_app import serve
 

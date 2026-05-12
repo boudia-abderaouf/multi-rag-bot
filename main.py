@@ -1,9 +1,8 @@
 import argparse
 import logging
-import sys
-from pathlib import Path
+from project_bootstrap import configure_project_path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent / "rag-plateform"))
+configure_project_path()
 
 from pipeline import run_ingestion
 
