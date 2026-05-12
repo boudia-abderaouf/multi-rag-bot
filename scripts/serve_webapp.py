@@ -10,6 +10,14 @@ WEBAPP_ROOT = Path(__file__).resolve().parent.parent / "webapp"
 
 
 class WebAppRequestHandler(SimpleHTTPRequestHandler):
+    extensions_map = {
+        **SimpleHTTPRequestHandler.extensions_map,
+        ".css": "text/css",
+        ".js": "text/javascript",
+        ".json": "application/json",
+        ".mjs": "text/javascript",
+    }
+
     def end_headers(self) -> None:
         self.send_header("Cache-Control", "no-store")
         super().end_headers()

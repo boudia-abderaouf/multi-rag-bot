@@ -220,6 +220,11 @@ Le shell front :
 
 Tu peux changer la cible API dans `webapp/assets/config.js`.
 
+Comptes demo disponibles par defaut :
+
+- `invite.juriste@demo.local` / `demo-juriste`
+- `invite.ops@demo.local` / `demo-ops`
+
 ## Domaine actif
 
 Le domaine actuellement configure est :

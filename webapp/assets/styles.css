@@ -95,6 +95,14 @@ code,
   padding: 10px 0 26px;
 }
 
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
 .brand {
   display: inline-flex;
   align-items: center;
@@ -263,6 +271,10 @@ code,
   border: 1px solid rgba(29, 26, 22, 0.08);
 }
 
+.logout-button {
+  min-height: 42px;
+}
+
 .hero-meta {
   display: grid;
   gap: 14px;
@@ -272,6 +284,7 @@ code,
 .status-card,
 .source-card,
 .feature-card,
+.demo-card,
 .endpoint-card {
   position: relative;
   padding: 18px;
@@ -342,10 +355,15 @@ code,
 .endpoint-card p,
 .source-card p,
 .form-note,
-.message p {
+.message p,
+.panel-subcopy {
   margin: 10px 0 0;
   color: var(--muted);
   line-height: 1.6;
+}
+
+.panel-subcopy {
+  margin-top: -6px;
 }
 
 .feature-tag {
@@ -364,11 +382,49 @@ code,
   gap: 14px;
 }
 
+.auth-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(300px, 0.9fr);
+  gap: 18px;
+}
+
 .auth-form label,
 .composer-label {
   display: grid;
   gap: 8px;
   font-weight: 500;
+}
+
+.form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.notice {
+  margin-bottom: 16px;
+  padding: 14px 16px;
+  border-radius: var(--radius-md);
+  border: 1px solid transparent;
+  line-height: 1.5;
+}
+
+.notice-info {
+  background: rgba(15, 118, 110, 0.08);
+  border-color: rgba(15, 118, 110, 0.14);
+  color: var(--teal-strong);
+}
+
+.notice-error {
+  background: rgba(180, 35, 24, 0.08);
+  border-color: rgba(180, 35, 24, 0.16);
+  color: var(--danger);
+}
+
+.notice-success {
+  background: rgba(30, 122, 58, 0.08);
+  border-color: rgba(30, 122, 58, 0.16);
+  color: #1d6d38;
 }
 
 input,
@@ -421,6 +477,38 @@ textarea {
   gap: 18px;
 }
 
+.session-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.session-pill,
+.app-chip {
+  display: grid;
+  gap: 3px;
+  padding: 10px 14px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.82);
+  border: 1px solid rgba(29, 26, 22, 0.08);
+}
+
+.session-pill strong,
+.app-chip strong {
+  font-size: 0.92rem;
+}
+
+.session-pill small,
+.app-chip span {
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+
+.app-chip {
+  margin-bottom: 16px;
+}
+
 .chat-panel,
 .side-panel {
   min-height: 100%;
@@ -456,6 +544,39 @@ textarea {
   margin-top: 12px;
 }
 
+.demo-grid {
+  display: grid;
+  gap: 14px;
+}
+
+.demo-card h3 {
+  margin: 12px 0 0;
+}
+
+.demo-meta {
+  display: grid;
+  gap: 8px;
+  margin-top: 14px;
+  color: var(--muted);
+  font-size: 0.94rem;
+}
+
+.demo-meta strong {
+  color: var(--text);
+  margin-right: 6px;
+}
+
+.demo-meta code {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: rgba(29, 26, 22, 0.06);
+}
+
+.demo-card .button {
+  margin-top: 16px;
+}
+
 .reveal {
   animation: fadeUp 520ms ease both;
 }
@@ -482,12 +603,17 @@ textarea {
 @media (max-width: 900px) {
   .topbar,
   .hero,
-  .chat-layout {
+  .chat-layout,
+  .auth-layout {
     grid-template-columns: 1fr;
   }
 
   .topbar {
     display: grid;
+  }
+
+  .topbar-actions {
+    justify-content: stretch;
   }
 
   .feature-grid {
@@ -506,6 +632,7 @@ textarea {
   .status-card,
   .source-card,
   .feature-card,
+  .demo-card,
   .endpoint-card {
     border-radius: 20px;
   }
@@ -527,6 +654,12 @@ textarea {
   .cta-row {
     display: grid;
     grid-template-columns: 1fr;
+  }
+
+  .form-actions,
+  .session-controls,
+  .topbar-actions {
+    display: grid;
   }
 
   .button {
