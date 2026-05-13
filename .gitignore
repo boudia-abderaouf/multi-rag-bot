@@ -1,2 +1,6 @@
-data/raw
 .env
+data/raw
+data/chunks
+.tmp-tests/
+__pycache__/
+*.pyc
