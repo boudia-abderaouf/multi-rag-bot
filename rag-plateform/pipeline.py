@@ -132,20 +132,29 @@ def _index_chunks(
     embedder: OpenAIEmbedder,
     vector_store: QdrantVectorStore,
 ) -> int:
-    records = list(iter_chunk_records(chunks_path))
-    if not records:
-        logger.warning(f"[{doc['id']}] Aucun chunk a indexer.")
-        return 0
+    collection = doc["collection"]
+    vector_store.delete_document(collection_name=collection, doc_id=doc["id"])
 
-    texts = [record["text"] for record in records]
-    vectors = embedder.embed_texts(texts)
-    vector_store.replace_document(
-        collection_name=doc["collection"],
-        doc_id=doc["id"],
-        records=records,
-        vectors=vectors,
-    )
-    return len(records)
+    total = 0
+    batch: list[dict[str, Any]] = []
+
+    for record in iter_chunk_records(chunks_path):
+        batch.append(record)
+        if len(batch) >= embedder.batch_size:
+            vectors = embedder.embed_texts([r["text"] for r in batch])
+            vector_store.upsert_batch(collection_name=collection, records=batch, vectors=vectors)
+            total += len(batch)
+            batch = []
+
+    if batch:
+        vectors = embedder.embed_texts([r["text"] for r in batch])
+        vector_store.upsert_batch(collection_name=collection, records=batch, vectors=vectors)
+        total += len(batch)
+
+    if total == 0:
+        logger.warning(f"[{doc['id']}] Aucun chunk a indexer.")
+
+    return total
 
 
 def run_ingestion(domain: str) -> None:

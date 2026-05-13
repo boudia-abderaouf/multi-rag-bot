@@ -62,6 +62,34 @@ class QdrantVectorStore:
             wait=True,
         )
 
+    def upsert_batch(
+        self,
+        *,
+        collection_name: str,
+        records: list[dict[str, Any]],
+        vectors: list[list[float]],
+    ) -> None:
+        if not records:
+            return
+        self.ensure_collection(collection_name, len(vectors[0]))
+        points = [
+            models.PointStruct(
+                id=self.build_point_id(doc_id=r["doc_id"], chunk_index=r["chunk_index"]),
+                vector=vector,
+                payload={
+                    "doc_id": r["doc_id"],
+                    "chunk_id": r["chunk_id"],
+                    "chunk_index": r["chunk_index"],
+                    "document_name": r["document_name"],
+                    "collection": r["collection"],
+                    "text": r["text"],
+                    "metadata": r["metadata"],
+                },
+            )
+            for r, vector in zip(records, vectors, strict=True)
+        ]
+        self.client.upsert(collection_name=collection_name, wait=True, points=points)
+
     def replace_document(
         self,
         *,
