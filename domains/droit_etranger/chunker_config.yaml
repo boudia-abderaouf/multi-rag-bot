@@ -1,6 +1,47 @@
-article_pattern: "^\"?\\s*(Art(?:icle)?\\.?\\s+[LRD]\\.?\\s*\\d{3,4}-\\d{1,3}(?:-\\d{1,3})?)"
+# Configuration chunker — Code CESEDA (PDF Legifrance / codes.droit.org)
+# Spécifique à ce domaine ; le chunker lui-même reste générique.
 
-# --- Séparateurs de structure hiérarchique ---
+# Début d'article : "Art. L. 142-1.-…" ou "L. 512-1 Ordonnance…"
+article_boundary_pattern: "^\"?\\s*(?:Art(?:icle)?\\.\\s*)?([LRD])\\.\\s*(\\d{3,4}-\\d{1,3}(?:-\\d{1,3})?)(?:\\.-\\s*|\\s+)"
+
+article_id:
+  mode: template
+  template: "Art. {type}. {number}"
+
+# Bruit fréquent dans les PDF codes.droit.org
+text_cleanup:
+  - "p\\.\\d+\\s+Code de l'entrée et du séjour des étrangers[^.]*"
+  - "service-public\\.fr[^.]*\\."
+  - "\\b(?:Legif\\.|Jp\\.Judi\\.|Jp\\.Admin\\.|Juricaf|Conseil Constit\\.|QPC)\\b"
+
+# Retrait des en-têtes Legifrance avant le corps juridique
+preamble:
+  - pattern: "^(?:Art(?:icle)?\\.\\s*)?[LRD]\\.\\s*\\d{3,4}-\\d{1,3}(?:-\\d{1,3})?\\.-\\s*(.+)$"
+    keep_group: 1
+  - pattern: "^(?:Art(?:icle)?\\.\\s*)?[LRD]\\.\\s*\\d{3,4}-\\d{1,3}(?:-\\d{1,3})?\\s+(?:Ordonnance|LOI|Décret)\\s+n°.+?(?:Juricaf|Jp\\.Admin\\.)\\s+"
+    strip_match: true
+  - pattern: "^(?:Art(?:icle)?\\.\\s*)?[LRD]\\.\\s*\\d{3,4}-\\d{1,3}(?:-\\d{1,3})?\\s+"
+    strip_match: true
+
+# Variantes outre-mer (même numéro d'article, textes différents)
+territory_markers:
+  - pattern: "îles\\s+Wallis\\s+et\\s+Futuna"
+    label: wallis_et_futuna
+  - pattern: "Polynésie\\s+française"
+    label: polynesie_francaise
+  - pattern: "Nouvelle-Calédonie"
+    label: nouvelle_caledonie
+  - pattern: "\\bMayotte\\b"
+    label: mayotte
+  - pattern: "Saint-Barthélemy|Saint-Barth"
+    label: saint_barthelemy
+  - pattern: "Saint-Martin"
+    label: saint_martin
+  - pattern: "Guadeloupe|Martinique|Guyane|La Réunion"
+    label: dom
+
+prefix_article_id: true
+
 hierarchy:
   - level: 1
     label: LIVRE
@@ -15,16 +56,15 @@ hierarchy:
     label: SECTION
     pattern: "^Section\\s+(.+)"
 
-# --- Taille des chunks ---
 chunk_size: 800
 chunk_overlap: 100
 min_chunk_size: 50
 
-# --- Métadonnées extraites automatiquement par chunk ---
 extract_metadata:
   - article_id
   - article_type
   - livre
   - titre
   - chapitre
+  - territoire
   - url_legifrance
