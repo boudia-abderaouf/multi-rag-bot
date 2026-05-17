@@ -1,0 +1,551 @@
+benchmark:
+  domain: droit_etranger
+  version: "1.0"
+  created: "2026-05-17"
+  description: >
+    Benchmark initial de qualité retrieval/réponse pour le domaine droit des étrangers (CESEDA).
+    Couvre les thèmes métier principaux à trois niveaux de difficulté.
+    Chaque question porte une attente_minimale utilisée pour évaluer la pertinence de la réponse.
+
+  themes:
+    - sejour
+    - asile
+    - eloignement
+    - regularisation
+    - famille
+    - nationalite
+    - mineurs
+    - travail
+
+  questions:
+
+    # ────────────────────────────────────────────────
+    # THÈME : séjour  (titres, cartes, visas)
+    # ────────────────────────────────────────────────
+
+    - id: Q001
+      theme: sejour
+      difficulte: simple
+      question: "Qu'est-ce qu'une carte de séjour temporaire et quelle est sa durée maximale de validité ?"
+      attente_minimale: >
+        La réponse doit mentionner qu'il s'agit d'un titre d'une durée
+        inférieure ou égale à un an, renouvelable, délivré par le préfet.
+      articles_cibles:
+        - "Art. L413-1"
+        - "Art. L413-2"
+
+    - id: Q002
+      theme: sejour
+      difficulte: simple
+      question: "Qu'est-ce qu'un visa de long séjour (VLS) et en quoi diffère-t-il d'un titre de séjour ?"
+      attente_minimale: >
+        La réponse doit indiquer que le VLS est délivré pour une durée
+        supérieure à 3 mois et inférieure à 1 an, et qu'il vaut titre
+        de séjour sans nécessiter de conversion immédiate pour certaines catégories.
+      articles_cibles:
+        - "Art. L311-1"
+
+    - id: Q003
+      theme: sejour
+      difficulte: moyen
+      question: "Quelles sont les conditions générales pour obtenir une carte de résident ?"
+      attente_minimale: >
+        La réponse doit couvrir au moins : résidence habituelle en France depuis
+        5 ans, intégration républicaine (respect des valeurs de la République,
+        connaissance du français), ressources stables, absence de menace à
+        l'ordre public.
+      articles_cibles:
+        - "Art. L433-1"
+        - "Art. L433-2"
+        - "Art. L433-3"
+
+    - id: Q004
+      theme: sejour
+      difficulte: moyen
+      question: "Dans quelles conditions un étranger peut-il obtenir une carte de séjour pluriannuelle ?"
+      attente_minimale: >
+        La réponse doit mentionner la durée (jusqu'à 4 ans), les catégories
+        éligibles (après un premier titre, sous conditions d'intégration)
+        et l'article applicable du CESEDA.
+      articles_cibles:
+        - "Art. L421-1"
+        - "Art. L421-7"
+
+    - id: Q005
+      theme: sejour
+      difficulte: difficile
+      question: >
+        Un étranger titulaire d'une carte de séjour temporaire dont la demande
+        de renouvellement est en cours peut-il travailler en attendant la décision
+        du préfet ? Sur quelle base juridique ?
+      attente_minimale: >
+        La réponse doit mentionner le récépissé de dépôt de demande de
+        renouvellement et ses effets (autorisation provisoire de travail si
+        le titre précédent portait une mention de travail), ainsi que
+        l'article correspondant.
+      articles_cibles:
+        - "Art. L431-2"
+        - "Art. L431-3"
+
+    # ────────────────────────────────────────────────
+    # THÈME : asile
+    # ────────────────────────────────────────────────
+
+    - id: Q006
+      theme: asile
+      difficulte: simple
+      question: "Qu'est-ce que l'OFPRA et quel est son rôle dans la procédure d'asile ?"
+      attente_minimale: >
+        La réponse doit identifier l'OFPRA comme l'Office français de protection
+        des réfugiés et apatrides, chargé d'examiner les demandes d'asile en
+        première instance et de reconnaître le statut de réfugié ou la
+        protection subsidiaire.
+      articles_cibles:
+        - "Art. L121-1"
+        - "Art. L521-1"
+
+    - id: Q007
+      theme: asile
+      difficulte: simple
+      question: "Qu'est-ce que la protection subsidiaire et à qui s'adresse-t-elle ?"
+      attente_minimale: >
+        La réponse doit préciser que la protection subsidiaire est accordée
+        aux personnes ne remplissant pas les critères de la Convention de Genève
+        mais risquant une peine de mort, torture, ou violence grave en cas
+        de retour dans leur pays.
+      articles_cibles:
+        - "Art. L512-1"
+        - "Art. L512-2"
+
+    - id: Q008
+      theme: asile
+      difficulte: moyen
+      question: "Comment un demandeur d'asile peut-il contester un refus de l'OFPRA ?"
+      attente_minimale: >
+        La réponse doit mentionner le recours devant la Cour nationale du
+        droit d'asile (CNDA), le délai de recours (1 mois), et le caractère
+        suspensif du recours pendant l'instruction.
+      articles_cibles:
+        - "Art. L532-1"
+        - "Art. L532-4"
+        - "Art. L571-1"
+
+    - id: Q009
+      theme: asile
+      difficulte: moyen
+      question: "Quelles sont les obligations d'un demandeur d'asile pendant l'instruction de sa demande ?"
+      attente_minimale: >
+        La réponse doit mentionner l'obligation de se présenter aux convocations
+        de l'OFPRA, de communiquer tout changement d'adresse, de ne pas quitter
+        le territoire, et les conséquences d'un manquement (clôture).
+      articles_cibles:
+        - "Art. L523-1"
+        - "Art. L523-2"
+
+    - id: Q010
+      theme: asile
+      difficulte: difficile
+      question: >
+        Quelles sont les conditions cumulatives permettant de reconnaître
+        le statut de réfugié au sens de la Convention de Genève de 1951 ?
+      attente_minimale: >
+        La réponse doit couvrir : crainte fondée de persécution, fondée sur
+        5 motifs (race, religion, nationalité, appartenance à un groupe social,
+        opinions politiques), incapacité ou refus de protection du pays
+        d'origine, impossibilité de s'installer dans une autre région du pays.
+      articles_cibles:
+        - "Art. L511-1"
+        - "Art. L512-1"
+
+    - id: Q011
+      theme: asile
+      difficulte: difficile
+      question: >
+        Dans quelles circonstances l'OFPRA peut-il mettre fin au statut de
+        réfugié d'une personne déjà protégée ?
+      attente_minimale: >
+        La réponse doit mentionner les clauses de cessation (changement de
+        circonstances, regain de protection nationale), les clauses d'exclusion
+        a posteriori (crime grave, actes contraires aux buts de l'ONU),
+        et le droit à être entendu avant toute décision.
+      articles_cibles:
+        - "Art. L511-7"
+        - "Art. L511-8"
+
+    # ────────────────────────────────────────────────
+    # THÈME : éloignement
+    # ────────────────────────────────────────────────
+
+    - id: Q012
+      theme: eloignement
+      difficulte: simple
+      question: "Qu'est-ce qu'une obligation de quitter le territoire français (OQTF) ?"
+      attente_minimale: >
+        La réponse doit définir l'OQTF comme une décision administrative du
+        préfet ordonnant à un étranger de quitter la France, en précisant
+        qu'elle fixe généralement le pays de destination et un délai de départ
+        volontaire (30 jours en principe).
+      articles_cibles:
+        - "Art. L611-1"
+        - "Art. L612-1"
+
+    - id: Q013
+      theme: eloignement
+      difficulte: moyen
+      question: "Dans quel délai et devant quelle juridiction peut-on contester une OQTF ?"
+      attente_minimale: >
+        La réponse doit mentionner le tribunal administratif, un délai de
+        30 jours (ou 48h en cas de placement en rétention ou assignation à
+        résidence), et le caractère suspensif du recours pendant l'instance.
+      articles_cibles:
+        - "Art. L614-1"
+        - "Art. L614-5"
+        - "Art. L614-6"
+
+    - id: Q014
+      theme: eloignement
+      difficulte: moyen
+      question: "Quelle est la durée maximale de rétention administrative et comment est-elle contrôlée ?"
+      attente_minimale: >
+        La réponse doit mentionner la durée initiale de 48h, prolongeable
+        par le juge des libertés et de la détention (JLD), pour une durée
+        totale maximale de 90 jours, et le contrôle judiciaire systématique.
+      articles_cibles:
+        - "Art. L741-1"
+        - "Art. L742-1"
+        - "Art. L743-1"
+
+    - id: Q015
+      theme: eloignement
+      difficulte: difficile
+      question: >
+        Dans quels cas précis un étranger ne peut-il pas faire l'objet d'une
+        mesure d'éloignement (immunités d'éloignement) ?
+      attente_minimale: >
+        La réponse doit énumérer les catégories protégées : mineur de 18 ans,
+        étranger résidant en France depuis l'âge de 13 ans, parent d'enfant
+        français, conjoint de Français depuis plus de 3 ans, étranger résidant
+        régulièrement depuis 10 ans, sauf menace grave à l'ordre public.
+      articles_cibles:
+        - "Art. L611-3"
+
+    - id: Q016
+      theme: eloignement
+      difficulte: difficile
+      question: >
+        Quelle est la distinction entre l'expulsion et l'OQTF, et dans quelles
+        circonstances l'expulsion administrative peut-elle être prononcée ?
+      attente_minimale: >
+        La réponse doit distinguer l'OQTF (mesure préfectorale pour irrégularité
+        de séjour) de l'expulsion (mesure pour menace grave à l'ordre public,
+        prononcée par le préfet ou le ministre, pouvant viser des étrangers
+        en situation régulière), en citant les articles pertinents.
+      articles_cibles:
+        - "Art. L631-1"
+        - "Art. L631-2"
+        - "Art. L631-3"
+
+    # ────────────────────────────────────────────────
+    # THÈME : régularisation
+    # ────────────────────────────────────────────────
+
+    - id: Q017
+      theme: regularisation
+      difficulte: simple
+      question: "Qu'est-ce que l'admission exceptionnelle au séjour (régularisation) ?"
+      attente_minimale: >
+        La réponse doit expliquer qu'il s'agit d'une procédure discrétionnaire
+        permettant au préfet de régulariser un étranger en situation irrégulière
+        sur la base de critères humanitaires ou de liens forts avec la France,
+        sans droit opposable.
+      articles_cibles:
+        - "Art. L435-1"
+
+    - id: Q018
+      theme: regularisation
+      difficulte: moyen
+      question: >
+        Quels sont les principaux critères pris en compte pour une régularisation
+        par le travail en France ?
+      attente_minimale: >
+        La réponse doit couvrir : ancienneté de présence sur le territoire,
+        contrat de travail ou promesse d'embauche, contributions fiscales et
+        sociales, éléments de vie privée et familiale, et le pouvoir
+        discrétionnaire du préfet.
+      articles_cibles:
+        - "Art. L435-1"
+        - "Art. L435-3"
+
+    - id: Q019
+      theme: regularisation
+      difficulte: difficile
+      question: >
+        Un étranger victime de violences conjugales en situation irrégulière
+        peut-il obtenir un titre de séjour autonome ? Quelles conditions
+        le CESEDA prévoit-il ?
+      attente_minimale: >
+        La réponse doit identifier la carte de séjour temporaire "vie privée
+        et familiale" délivrée aux victimes de violences conjugales, les
+        éléments de preuve requis (dépôt de plainte, ordonnance de protection),
+        et le fait que le titre peut être accordé même si le séjour était
+        précaire ou irrégulier.
+      articles_cibles:
+        - "Art. L425-1"
+        - "Art. L425-3"
+
+    # ────────────────────────────────────────────────
+    # THÈME : famille (regroupement familial, liens familiaux)
+    # ────────────────────────────────────────────────
+
+    - id: Q020
+      theme: famille
+      difficulte: simple
+      question: "Qu'est-ce que le regroupement familial et qui peut en bénéficier ?"
+      attente_minimale: >
+        La réponse doit définir le regroupement familial comme la procédure
+        permettant à un étranger résidant régulièrement en France de faire
+        venir son conjoint et ses enfants mineurs, et mentionner les
+        conditions minimales (titre de séjour d'au moins 1 an, ressources
+        suffisantes, logement décent).
+      articles_cibles:
+        - "Art. L411-1"
+        - "Art. L411-5"
+
+    - id: Q021
+      theme: famille
+      difficulte: moyen
+      question: >
+        Dans quelles conditions le regroupement familial peut-il être refusé
+        pour motif d'ordre public ou d'atteinte aux principes essentiels
+        de la vie familiale en France ?
+      attente_minimale: >
+        La réponse doit mentionner les motifs de refus : menace à l'ordre
+        public d'un membre de la famille, pratiques contraires aux principes
+        fondamentaux (polygamie), non-respect des conditions de ressources
+        ou de logement, et l'article applicable.
+      articles_cibles:
+        - "Art. L411-5"
+        - "Art. L411-7"
+
+    - id: Q022
+      theme: famille
+      difficulte: difficile
+      question: >
+        Un ressortissant étranger qui divorce après l'obtention d'une carte
+        de séjour dans le cadre du regroupement familial peut-il conserver
+        son titre de séjour ? Dans quelles conditions ?
+      attente_minimale: >
+        La réponse doit distinguer les cas selon l'ancienneté du mariage
+        et la présence d'enfants : maintien du titre si communauté de vie
+        d'au moins 3 ans avant la séparation ou si enfants à charge, et
+        les éventuelles exceptions en cas de violences conjugales.
+      articles_cibles:
+        - "Art. L423-21"
+        - "Art. L423-22"
+
+    # ────────────────────────────────────────────────
+    # THÈME : nationalité et naturalisation
+    # ────────────────────────────────────────────────
+
+    - id: Q023
+      theme: nationalite
+      difficulte: simple
+      question: "Un enfant né en France de parents étrangers obtient-il automatiquement la nationalité française ?"
+      attente_minimale: >
+        La réponse doit préciser que la naissance en France ne confère pas
+        automatiquement la nationalité (pas de droit du sol pur), mais qu'un
+        enfant né en France de parents étrangers peut acquérir la nationalité
+        française à ses 18 ans (ou avant sur demande) sous certaines conditions
+        de résidence.
+      articles_cibles:
+        - "Art. 21-7 Code civil (référencé dans CESEDA)"
+        - "Art. L111-1"
+
+    - id: Q024
+      theme: nationalite
+      difficulte: moyen
+      question: "Quelles sont les conditions de la naturalisation par décret pour un étranger résidant en France ?"
+      attente_minimale: >
+        La réponse doit mentionner : résidence régulière depuis au moins 5 ans
+        (réduite à 2 ans pour certains cas), intégration dans la société
+        française (langue, valeurs, moyens d'existence), absence de condamnations
+        graves, et le pouvoir discrétionnaire de l'État.
+      articles_cibles:
+        - "Art. 21-15 Code civil"
+        - "Art. 21-16 Code civil"
+
+    - id: Q025
+      theme: nationalite
+      difficulte: difficile
+      question: "Quelles sont les conditions pour la reconnaissance du statut d'apatride et quelles protections en découlent ?"
+      attente_minimale: >
+        La réponse doit définir l'apatride (personne qu'aucun État ne considère
+        comme son ressortissant), mentionner l'OFPRA comme autorité compétente,
+        les protections accordées (titre de séjour spécifique, document de
+        voyage), et l'impossibilité d'être expulsé vers un pays qui ne le
+        reconnaît pas.
+      articles_cibles:
+        - "Art. L812-1"
+        - "Art. L812-2"
+        - "Art. L814-1"
+
+    # ────────────────────────────────────────────────
+    # THÈME : mineurs étrangers
+    # ────────────────────────────────────────────────
+
+    - id: Q026
+      theme: mineurs
+      difficulte: simple
+      question: "Qu'est-ce qu'un mineur non accompagné (MNA) au sens du droit des étrangers ?"
+      attente_minimale: >
+        La réponse doit définir le MNA comme un mineur étranger présent
+        sur le territoire français sans représentant légal adulte, séparé de
+        ses parents, et préciser qu'il relève de la protection de l'enfance
+        (aide sociale à l'enfance) et non du régime général des étrangers.
+      articles_cibles:
+        - "Art. L221-1"
+
+    - id: Q027
+      theme: mineurs
+      difficulte: moyen
+      question: "Dans quels cas exceptionnels un mineur étranger peut-il être placé en zone d'attente ?"
+      attente_minimale: >
+        La réponse doit préciser que le mineur en zone d'attente dispose
+        d'un administrateur ad hoc, que le maintien doit être limité dans
+        le temps, que le juge des libertés et de la détention contrôle le
+        placement, et que l'intérêt supérieur de l'enfant prime.
+      articles_cibles:
+        - "Art. L221-1"
+        - "Art. L221-5"
+
+    - id: Q028
+      theme: mineurs
+      difficulte: difficile
+      question: >
+        Un mineur étranger qui atteint sa majorité pendant son suivi par
+        l'aide sociale à l'enfance peut-il obtenir un titre de séjour ?
+        Quelles sont les conditions selon le CESEDA ?
+      attente_minimale: >
+        La réponse doit mentionner la carte de séjour temporaire délivrée
+        de plein droit aux jeunes majeurs confiés à l'ASE avant 16 ans
+        (ou 16-18 ans sous conditions), ayant suivi une formation professionnelle,
+        et l'absence de menace à l'ordre public.
+      articles_cibles:
+        - "Art. L435-3"
+        - "Art. L423-22"
+
+    # ────────────────────────────────────────────────
+    # THÈME : travail
+    # ────────────────────────────────────────────────
+
+    - id: Q029
+      theme: travail
+      difficulte: simple
+      question: "Qu'est-ce que la carte de séjour « talent » (anciennement « passeport talent ») ?"
+      attente_minimale: >
+        La réponse doit décrire la carte talent comme un titre pluriannuel
+        (4 ans) destiné aux profils qualifiés (scientifiques, artistes,
+        entrepreneurs, investisseurs), mentionner qu'elle autorise le travail
+        sans autorisation séparée et qu'elle peut concerner le conjoint.
+      articles_cibles:
+        - "Art. L421-9"
+        - "Art. L421-14"
+
+    - id: Q030
+      theme: travail
+      difficulte: moyen
+      question: "Quelles sont les conditions pour qu'un étranger obtienne une autorisation de travail en France ?"
+      attente_minimale: >
+        La réponse doit mentionner : possession d'un titre de séjour avec
+        mention de travail autorisé, ou obtention d'une autorisation de
+        travail distincte, la vérification de la situation de l'emploi
+        (sauf métiers en tension), et le rôle de la DREETS.
+      articles_cibles:
+        - "Art. L5221-1 Code du travail (référencé CESEDA)"
+        - "Art. L414-1"
+
+    - id: Q031
+      theme: travail
+      difficulte: difficile
+      question: >
+        Comment s'applique la règle de la « situation de l'emploi » (opposabilité)
+        pour le recrutement d'un ressortissant étranger hors UE, et quelles
+        sont les exceptions à cette règle ?
+      attente_minimale: >
+        La réponse doit expliquer que l'employeur doit justifier qu'aucun
+        candidat de l'espace économique européen n'est disponible (sauf pour
+        les métiers en tension listés par arrêté), mentionner les dérogations
+        pour certaines cartes (talent, ICT, saisonniers sous accords bilatéraux)
+        et l'article CESEDA ou code du travail applicable.
+      articles_cibles:
+        - "Art. L414-13"
+        - "Art. L414-14"
+
+    # ────────────────────────────────────────────────
+    # QUESTIONS TRANSVERSALES / PROCÉDURALES
+    # ────────────────────────────────────────────────
+
+    - id: Q032
+      theme: sejour
+      difficulte: moyen
+      question: >
+        Qu'est-ce qu'une interdiction de retour sur le territoire français (IRTF)
+        et comment peut-elle être contestée ?
+      attente_minimale: >
+        La réponse doit définir l'IRTF comme une mesure accessoire à l'OQTF
+        interdisant le retour pour une durée déterminée, mentionner qu'elle
+        peut être prononcée en cas de non-respect du délai de départ volontaire,
+        et que le recours se fait devant le tribunal administratif dans les
+        mêmes délais que l'OQTF.
+      articles_cibles:
+        - "Art. L612-6"
+        - "Art. L612-8"
+
+    - id: Q033
+      theme: asile
+      difficulte: difficile
+      question: >
+        Comment fonctionne le règlement Dublin III et dans quels cas la France
+        peut-elle être déclarée État membre responsable de l'examen d'une
+        demande d'asile ?
+      attente_minimale: >
+        La réponse doit expliquer que le règlement Dublin détermine quel État
+        UE est responsable d'examiner la demande, mentionner les critères
+        (premier pays d'entrée, visas délivrés, liens familiaux), la procédure
+        de transfert vers cet État, et les délais de prescription.
+      articles_cibles:
+        - "Art. L572-1"
+        - "Art. L572-2"
+        - "Art. L572-3"
+
+    - id: Q034
+      theme: regularisation
+      difficulte: difficile
+      question: >
+        Un étranger en situation irrégulière depuis plus de 10 ans peut-il
+        se prévaloir de cette ancienneté pour obtenir de plein droit un titre
+        de séjour ? Quelles conditions s'appliquent ?
+      attente_minimale: >
+        La réponse doit préciser que la durée de présence seule ne crée pas
+        de droit automatique, mais peut constituer un élément dans une demande
+        de régularisation discrétionnaire, et mentionner les critères
+        complémentaires (vie privée et familiale, absence de menace à l'ordre
+        public, ressources).
+      articles_cibles:
+        - "Art. L435-1"
+        - "Art. L423-23"
+
+    - id: Q035
+      theme: eloignement
+      difficulte: moyen
+      question: >
+        Un étranger qui fait l'objet d'une OQTF peut-il demander un délai
+        de départ volontaire supérieur à 30 jours ? Dans quels cas ?
+      attente_minimale: >
+        La réponse doit mentionner que le préfet peut accorder jusqu'à
+        90 jours supplémentaires pour des motifs humanitaires (état de santé,
+        scolarisation des enfants, démarches actives de retour), et les
+        conditions de cette prolongation.
+      articles_cibles:
+        - "Art. L612-2"
+        - "Art. L612-3"
