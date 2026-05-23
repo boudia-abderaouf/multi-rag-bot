@@ -21,14 +21,34 @@ from pathlib import Path
 
 
 # ── normalisation des identifiants d'articles ────────────────────────────────
-# Le benchmark écrit  "Art. L413-1"
+# Le benchmark écrit  "Art. L413-1"  ou  "Art. L413-1 (description)"
+#                 ou  "Art. L421-9 à L421-13 (plages d'articles)"
 # Les chunks Qdrant   "Art. L. 413-1"  ou  "Art. L. 313-4"
-# → on retire le préfixe "Art.", les espaces et les points pour comparer.
+# → on retire le préfixe "Art.", les descriptions entre parenthèses,
+#   les espaces et les points pour comparer.
+#   Les plages "X à Y" sont développées en articles individuels.
 
 def _normalize_article(raw: str) -> str:
-    s = re.sub(r"(?i)art\.?\s*", "", raw)   # retire le préfixe Art. / Art
-    s = re.sub(r"[.\s]", "", s)             # retire les . et espaces restants
+    s = re.sub(r"\([^)]*\)", "", raw)        # retire les descriptions "(…)"
+    s = re.sub(r"(?i)art\.?\s*", "", s)      # retire le préfixe Art. / Art
+    s = re.sub(r"[.\s]", "", s)              # retire les . et espaces restants
     return s.lower()
+
+
+_RANGE_RE = re.compile(
+    r"(?i)art(?:icle)?\.?\s*([LRD])\.?\s*(\d{3,4})-(\d{1,3})\s+à\s+[LRD]\.?\s*\d{3,4}-(\d{1,3})",
+)
+
+
+def _expand_article_range(raw: str) -> list[str]:
+    """Return individual article IDs for ranges like 'Art. L421-9 à L421-13'."""
+    m = _RANGE_RE.search(raw)
+    if not m:
+        return [raw]
+    letter, base, start, end = m.group(1), m.group(2), int(m.group(3)), int(m.group(4))
+    if start > end or (end - start) > 20:
+        return [raw]
+    return [f"Art. {letter}. {base}-{i}" for i in range(start, end + 1)]
 
 
 # Regex pour trouver les citations dans le texte d'une réponse
@@ -49,7 +69,11 @@ def _retrieved_set(chunks: list[dict]) -> set[str]:
 # ── scoring d'un enregistrement ──────────────────────────────────────────────
 
 def score_record(record: dict) -> dict:
-    cibles_raw: list[str] = record.get("articles_cibles") or []
+    # Expand article ranges before normalising (e.g. "L421-9 à L421-13" → 5 articles)
+    cibles_raw_orig: list[str] = record.get("articles_cibles") or []
+    cibles_raw: list[str] = []
+    for art in cibles_raw_orig:
+        cibles_raw.extend(_expand_article_range(art))
     cibles_norm = [_normalize_article(a) for a in cibles_raw]
 
     retrieved = _retrieved_set(record.get("retrieved_chunks") or [])
