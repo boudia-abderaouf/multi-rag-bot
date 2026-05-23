@@ -23,15 +23,20 @@ from pathlib import Path
 # ── normalisation des identifiants d'articles ────────────────────────────────
 # Le benchmark écrit  "Art. L413-1"  ou  "Art. L413-1 (description)"
 #                 ou  "Art. L421-9 à L421-13 (plages d'articles)"
+#                 ou  "Art. L435-3 al. 1"  (alinéas d'un article)
 # Les chunks Qdrant   "Art. L. 413-1"  ou  "Art. L. 313-4"
 # → on retire le préfixe "Art.", les descriptions entre parenthèses,
-#   les espaces et les points pour comparer.
+#   les références d'alinéa "al. N", les espaces et les points.
 #   Les plages "X à Y" sont développées en articles individuels.
 
 def _normalize_article(raw: str) -> str:
-    s = re.sub(r"\([^)]*\)", "", raw)        # retire les descriptions "(…)"
-    s = re.sub(r"(?i)art\.?\s*", "", s)      # retire le préfixe Art. / Art
-    s = re.sub(r"[.\s]", "", s)              # retire les . et espaces restants
+    s = re.sub(r"\([^)]*\)", "", raw)                  # retire les descriptions "(…)"
+    s = re.sub(r"(?i)\bal(?:inéa)?\.?\s*\d+", "", s)  # retire "al. 1", "alinéa 2", etc.
+    s = re.sub(r"(?i)art(?:icle)?\.?\s*", "", s)       # retire le préfixe Art. / Art. / Article
+    # retire les noms de code qui peuvent suivre le numéro d'article
+    # ex : "L414-1 CESEDA", "21-7 Code civil", "L5221-2 Code du travail", "L221-2-2 CASF"
+    s = re.sub(r"(?i)\s+(?:CESEDA|Code\b[^.\d\n]*|CASF|CASPE)\b.*$", "", s.strip())
+    s = re.sub(r"[.\s]", "", s)                        # retire les . et espaces restants
     return s.lower()
 
 

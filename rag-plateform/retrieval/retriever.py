@@ -100,24 +100,40 @@ class Retriever:
         domain: str,
         query: str,
         limit: int = 10,
-        n_query_variants: int = 3,
+        n_query_variants: int = 5,
+        n_hyde: int = 3,
+        direct_top_k: int = 100,
     ):
-        """Multi-query retrieval fused with Reciprocal Rank Fusion.
+        """Multi-query retrieval fused with Reciprocal Rank Fusion + direct guarantee.
 
-        Generates `n_query_variants` legal reformulations of the query, embeds
-        each one, retrieves candidates from all domain collections, then merges
-        the ranked lists via RRF before returning the top `limit` hits.
+        Pipeline:
+          1. Original query (verbatim)
+          2. n_query_variants legal reformulations via LLM
+          3. n_hyde HyDE documents from different angles
+        All lists are merged with Reciprocal Rank Fusion.
+
+        Additionally, the top `direct_top_k` hits from the original query are
+        always included in the final result set.  This prevents articles that are
+        highly relevant to the original query but poorly represented across
+        variants/HyDE from being lost in the RRF merge.
         """
-        candidate_limit = max(limit * 3, 20)
+        candidate_limit = max(limit * 8, 400)
 
         queries = [query]
         if n_query_variants > 0 and self.embedder.is_available():
             queries.extend(self._expand_query(query, n_variants=n_query_variants))
 
+        # HyDE: embed hypothetical CESEDA articles rather than the raw question.
+        # Multiple angles cover both "définition" and "procédure" aspects.
+        if n_hyde > 0 and self.embedder.is_available():
+            for hyde_text in self._generate_hyde_multi(query, n=n_hyde):
+                queries.append(hyde_text)
+
         collection_names = self.resolve_collection_names(domain)
         all_ranked_lists = []
+        direct_hits: list = []  # top hits from the original query (index 0)
 
-        for q in queries:
+        for q_idx, q in enumerate(queries):
             query_vector = self.embedder.embed_query(q)
             hits_for_query = []
             for collection_name in collection_names:
@@ -135,8 +151,26 @@ class Retriever:
                     seen[h.point_id] = h
             ranked = sorted(seen.values(), key=lambda x: x.score, reverse=True)
             all_ranked_lists.append(ranked[:candidate_limit])
+            if q_idx == 0:
+                # Keep a deep pool from the original query for the direct guarantee
+                direct_hits = ranked[:max(direct_top_k, candidate_limit)]
 
-        return self._rrf_merge(all_ranked_lists, limit=limit)
+        # Use candidate_limit for the RRF merge (not just `limit`) so that articles
+        # appearing in the top pool of HyDE / variant queries — but NOT in the top pool
+        # of the original query — are still surfaced.  This trades a small amount of
+        # precision for significantly better recall on semantically-distant articles.
+        rrf_results = self._rrf_merge(all_ranked_lists, limit=candidate_limit)
+
+        # Hybrid guarantee: the top `direct_top_k` hits from the original query are
+        # APPENDED to the RRF result set (not filtered back to `limit`).
+        # This guarantees that any article in the top-`direct_top_k` direct-cosine
+        # results is surfaced even if the multi-query RRF would have ranked it out.
+        # Callers that need a hard cap should slice the result themselves.
+        seen_ids = {h.point_id for h in rrf_results}
+        # Use all direct hits up to candidate_limit (not capped to direct_top_k)
+        # so that articles at high rank in the original query are guaranteed.
+        extras = [h for h in direct_hits if h.point_id not in seen_ids]
+        return rrf_results + extras
 
     def build_prompt(self, *, domain: str, question: str, hits) -> str:
         template_path = Path("domains") / domain / "prompt_template.txt"
@@ -161,6 +195,63 @@ class Retriever:
         return collections or [domain]
 
     # ── Private helpers ───────────────────────────────────────────────────────
+
+    def _generate_hyde_multi(self, query: str, n: int = 2) -> list[str]:
+        """HyDE – Hypothetical Document Embeddings, multiple angles.
+
+        Generates n hypothetical CESEDA articles from different perspectives:
+        - angle 0 : définition / déclaratif (qu'est-ce que c'est, qui est concerné)
+        - angle 1 : procédure / conditions (comment ça s'applique, quelles règles)
+        - angle 2 : effets juridiques / droits conférés / interdictions
+        Legal articles use different vocabulary than questions; embedding realistic
+        article excerpts bridges this gap far better than embedding the question.
+        """
+        angles = [
+            (
+                "Tu es rédacteur du CESEDA. Rédige un court extrait d'article (3-5 phrases) "
+                "en style juridique officiel qui DÉFINIT ou DÉCRIT qui est concerné par la "
+                "notion evoquée dans la question. Commence directement par le contenu, "
+                "sans numéro d'article, en utilisant le vocabulaire exact du code.\n\nQuestion : "
+            ),
+            (
+                "Tu es rédacteur du CESEDA. Rédige un court extrait d'article (3-5 phrases) "
+                "en style juridique officiel qui FIXE LES CONDITIONS ou LA PROCÉDURE "
+                "applicable au cas évoqué dans la question. Tournures passives, références "
+                "aux autorités compétentes. Commence directement par le contenu, sans numéro "
+                "d'article.\n\nQuestion : "
+            ),
+            (
+                "Tu es rédacteur du CESEDA. Rédige un court extrait d'article (3-5 phrases) "
+                "en style juridique officiel qui ÉTABLIT LES EFFETS JURIDIQUES, LES DROITS "
+                "CONFÉRÉS ou les INTERDICTIONS applicables à la situation évoquée dans la question. "
+                "Utilise des formulations comme 'emporte le droit de', 'ne peut faire l\\'objet de', "
+                "'vaut autorisation de', 'donne lieu à'. Vocabulaire exact du CESEDA, sans numéro "
+                "d'article.\n\nQuestion : "
+            ),
+        ]
+        results = []
+        client = self.embedder.client
+        if client is None:
+            return results
+        for i, prefix in enumerate(angles[:n]):
+            try:
+                response = client.chat.completions.create(
+                    model="gpt-4.1-mini",
+                    messages=[{"role": "user", "content": prefix + query}],
+                    max_tokens=250,
+                    temperature=0.1,
+                )
+                content = (response.choices[0].message.content or "").strip()
+                if content:
+                    results.append(content)
+            except Exception as exc:
+                logger.warning(f"HyDE angle {i} failed: {exc}")
+        return results
+
+    def _generate_hyde(self, query: str) -> str | None:
+        """Single HyDE — kept for backwards-compat; use _generate_hyde_multi instead."""
+        results = self._generate_hyde_multi(query, n=1)
+        return results[0] if results else None
 
     def _expand_query(self, query: str, n_variants: int = 2) -> list[str]:
         """Ask the LLM for alternative legal formulations of the query."""

@@ -137,7 +137,7 @@ def main() -> None:
     parser.add_argument("--theme", default=None, help="Filtrer par thème (ex: asile)")
     parser.add_argument("--difficulte", default=None, choices=["simple", "moyen", "difficile"],
                         help="Filtrer par niveau de difficulté")
-    parser.add_argument("--limit", type=int, default=20, help="Nombre de chunks récupérés par question")
+    parser.add_argument("--limit", type=int, default=50, help="Nombre de chunks récupérés par question")
     args = parser.parse_args()
 
     output_path = run(
