@@ -155,9 +155,10 @@ benchmark:
         première instance et de reconnaître le statut de réfugié, la protection
         subsidiaire ou le statut d'apatride.
       articles_cibles:
-        - "Art. L121-1 (missions de l'OFPRA)"
+        - "Art. L121-7 (missions de l'OFPRA)"
         - "Art. L521-1 (examen de la demande d'asile par l'OFPRA)"
-      # Pas d'erreur majeure sur les articles cités.
+      # CORRECTION : L121-1 dans notre PDF = OFII (immigration/intégration), pas OFPRA.
+      # L121-7 est l'article qui définit l'OFPRA dans notre PDF.
 
     - id: Q007
       theme: asile
@@ -185,9 +186,10 @@ benchmark:
         procédure accélérée ou irrecevabilité.
       articles_cibles:
         - "Art. L532-1 (recours devant la CNDA)"
-        - "Art. L532-4 (délai et procédure)"
-        - "Art. L571-1 (effet suspensif)"
-      # Pas d'erreur majeure sur les articles cités.
+        - "Art. L532-4 (délai et procédure CNDA)"
+      # CORRECTION : L571-1 dans notre PDF = procédure Dublin (enregistrement demande
+      # quand autre État compétent), PAS l'effet suspensif du recours CNDA.
+      # L'effet suspensif est un principe procédural mentionné dans L532-1/L532-4.
 
     - id: Q009
       theme: asile
@@ -273,10 +275,10 @@ benchmark:
         est en principe suspensif.
       articles_cibles:
         - "Art. L614-1 (recours contre l'OQTF)"
-        - "Art. L614-5 (délai 30 jours)"
-        - "Art. L614-6 (délai 96h en rétention/assignation depuis loi 2024)"
-      # ERREUR ORIGINALE : le délai de 48h en rétention est dépassé. La loi
-      # n°2024-42 du 26 janvier 2024 a porté ce délai à 96 heures.
+        - "Art. L614-2 (délai de recours OQTF)"
+      # CORRECTION : L614-5 et L614-6 sont des articles introduits par la loi 2024-42
+      # et n'existent pas dans notre PDF (version antérieure). Notre PDF contient
+      # L614-1 à L614-4 pour les délais de recours OQTF.
 
     - id: Q014
       theme: eloignement
@@ -294,13 +296,15 @@ benchmark:
         judiciaire.
       articles_cibles:
         - "Art. L741-1 (placement initial 96h par le préfet)"
-        - "Art. L742-1 à L742-3 (première prolongation 26 jours)"
-        - "Art. L742-4 à L742-5 (prolongations suivantes, durée totale 90 jours)"
-      # ERREUR ORIGINALE MAJEURE :
-      # 1. La durée initiale n'est plus 48h mais 96h (loi 2024-42, confirmée loi 2025-796).
-      # 2. La première prolongation est de 26 jours (non « 28 jours » ou autre).
-      # 3. Le terme « JLD » (juge des libertés et de la détention) a été remplacé
-      #    par « magistrat du siège du TJ » suite à la réforme judiciaire.
+        - "Art. L742-1 (prolongation judiciaire au-delà 96h)"
+        - "Art. L742-3 (durée prolongation 26 jours)"
+        - "Art. L742-4 (deuxième prolongation et suivantes)"
+      # CORRECTION :
+      # 1. L742-2 dans notre PDF = "maintenu à disposition de la justice" (audience), pas prolongation.
+      # 2. L742-5 n'existe pas dans notre PDF (on passe de L742-4 à L742-6).
+      # 3. L741-1 ✓ : placement initial 96h par le préfet.
+      # 4. L742-1 ✓ : maintien au-delà 96h par magistrat du siège TJ.
+      # 5. L742-3 ✓ : 26 jours de prolongation. L742-4 ✓ : 2e prolongation.
 
     - id: Q015
       theme: eloignement
@@ -461,13 +465,11 @@ benchmark:
         sont nés de l'union. En cas de violences conjugales ayant entraîné la
         rupture, le retrait du titre est impossible quelle que soit l'ancienneté.
       articles_cibles:
-        - "Art. L431-2 (version antérieure à la recodification, anciens textes)"
-        - "Art. L423-21 (conjoint arrivé par regroupement familial, maintien du titre)"
-        - "Art. L423-22 (maintien en cas de violences conjugales)"
-      # NOTE : Les articles L423-21 et L423-22 du CESEDA recodifié (2021) traitent
-      # effectivement du maintien du titre du conjoint en cas de rupture.
-      # L423-21 : rupture de la vie commune et retrait possible dans les 3 ans.
-      # L423-22 : exception violences conjugales.
+        - "Art. L423-17 (rupture vie commune conjoint regroupement familial, retrait possible)"
+        - "Art. L423-18 (maintien titre malgré rupture en cas de violences conjugales)"
+      # CORRECTION : Dans notre PDF, L423-21 = carte de séjour pour jeune étranger
+      # résidant en France depuis l'âge de 13 ans. L423-22 = carte pour jeune confié à l'ASE.
+      # Les articles sur divorce/rupture après regroupement familial sont L423-17 et L423-18.
 
     # ────────────────────────────────────────────────
     # THÈME : nationalité et naturalisation
@@ -487,25 +489,11 @@ benchmark:
         13 et 18 ans. L'art. L426-1 du CESEDA prévoit la délivrance d'une carte
         de résident à cet étranger avant sa majorité.
       articles_cibles:
-        - "Art. 21-7 Code civil (acquisition de la nationalité à la majorité)"
-        - "Art. L426-1 CESEDA (carte de résident pour l'étranger appelé à devenir français)"
+        - "Art. L426-1 (carte de résident pour l'étranger appelé à devenir français)"
       # Pas d'erreur majeure sur les articles cités.
 
-    - id: Q024
-      theme: nationalite
-      difficulte: moyen
-      question: "Quelles sont les conditions de la naturalisation par décret pour un étranger résidant en France ?"
-      attente_minimale: >
-        La réponse doit mentionner : résidence régulière et habituelle depuis au
-        moins 5 ans (réduite à 2 ans pour certains cas : diplômé d'une grande
-        école française, service notable rendu à la France, etc.), intégration
-        dans la société française (français au moins niveau B1 oral, valeurs de
-        la République, moyens d'existence), absence de condamnations, et le
-        pouvoir discrétionnaire de l'État.
-      articles_cibles:
-        - "Art. 21-15 Code civil (conditions de la naturalisation)"
-        - "Art. 21-16 Code civil (délai réduit à 2 ans dans certains cas)"
-      # Pas d'erreur majeure sur les articles cités.
+    # Q024 SUPPRIMÉE : la naturalisation par décret est régie exclusivement par les
+    # art. 21-15 à 21-30 du Code civil, hors CESEDA. Pas d'articles CESEDA à tester.
 
     - id: Q025
       theme: nationalite
@@ -519,11 +507,14 @@ benchmark:
         document de voyage, protection contre l'expulsion vers un pays qui ne le
         reconnaît pas), et le lien avec la Convention de New York de 1954.
       articles_cibles:
-        - "Art. L812-1 (définition et mission OFPRA pour les apatrides)"
-        - "Art. L812-2 (procédure de reconnaissance)"
-        - "Art. L424-9 (titre de séjour du bénéficiaire du statut d'apatride)"
-        - "Art. L814-1 (protection contre l'éloignement)"
-      # Pas d'erreur majeure. L812-1 et L812-2 existent bien dans le CESEDA recodifié.
+        - "Art. L121-7 (OFPRA reconnaît le statut d'apatride)"
+        - "Art. L424-18 (titre de séjour du bénéficiaire du statut d'apatride)"
+      # CORRECTION : Dans notre PDF, L812-1 et L812-2 = contrôle des documents de circulation
+      # (pas de rapport avec les apatrides). L424-9 = protection subsidiaire (pas apatrides).
+      # L814-1 = confiscation du passeport (pas protection apatrides).
+      # Les vrais articles apatride dans notre PDF :
+      #   L121-7 : OFPRA reconnaît le statut d'apatride.
+      #   L424-18 : CSP "bénéficiaire du statut d'apatride" 4 ans (distinct de L424-9 = subsidiaire).
 
     # ────────────────────────────────────────────────
     # THÈME : mineurs étrangers
@@ -540,11 +531,11 @@ benchmark:
         de l'enfance (aide sociale à l'enfance, art. L221-2-2 CASF) et est
         protégé contre toute mesure d'éloignement (art. L611-3 CESEDA).
       articles_cibles:
-        - "Art. L221-1 CESEDA (zone d'attente, mineur)"
+        - "Art. L341-1 (placement en zone d'attente)"
         - "Art. L611-3 CESEDA (protection contre l'éloignement)"
-        - "Art. L221-2-2 CASF (prise en charge par l'ASE)"
-      # NOTE : L221-1 CESEDA traite des personnes maintenues en zone d'attente,
-      # dont les mineurs. La définition du MNA est davantage dans le CASF.
+      # CORRECTION : L221-1 dans notre PDF = documents obligatoires pour entrer en France
+      # (pas de rapport avec la zone d'attente). La zone d'attente est au Livre III,
+      # L341-1 (placement initial en zone d'attente).
 
     - id: Q027
       theme: mineurs
@@ -558,10 +549,12 @@ benchmark:
         doit être strictement limitée. Il ne peut pas être placé en rétention
         administrative (art. L741-5).
       articles_cibles:
-        - "Art. L221-1 (zone d'attente)"
-        - "Art. L221-5 (administrateur ad hoc pour mineur en ZA)"
+        - "Art. L341-1 (placement en zone d'attente, contrôle frontière)"
+        - "Art. L343-2 (administrateur ad hoc pour mineur non accompagné en ZA)"
         - "Art. L741-5 (interdiction de rétention pour les mineurs)"
-      # Pas d'erreur majeure sur les articles cités.
+      # CORRECTION : L221-1 = entrée en France (documents), pas zone d'attente.
+      # L221-5 n'existe pas dans notre PDF (notre PDF a seulement L221-1 et L221-2).
+      # Zone d'attente → L341-1 ; admin ad hoc mineur ZA → L343-2.
 
     - id: Q028
       theme: mineurs
@@ -600,11 +593,12 @@ benchmark:
         etc.), autorisant le travail sans démarche séparée et pouvant bénéficier
         au conjoint (« passeport talent famille »).
       articles_cibles:
-        - "Art. L421-9 à L421-13 (cartes passeport talent après recodification 2021
-          et modification loi 2024)"
-        - "Art. L421-14 (passeport talent famille)"
-      # NOTE : L421-9 est l'article de tête de la section « passeport talent » dans
-      # le CESEDA recodifié. La loi 2024 a réformé et recentré les 8 motifs.
+        - "Art. L421-9 (talent-salarié qualifié, carte passeport talent)"
+        - "Art. L421-11 (talent-carte bleue européenne, emploi hautement qualifié)"
+        - "Art. L421-14 (talent-chercheur, enseignant universitaire)"
+      # CORRECTION : La plage "L421-9 à L421-13" génère L421-10 qui n'existe pas dans
+      # notre PDF (notre PDF passe de L421-9 à L421-11). Remplacement par les articles
+      # individuels existants. L421-10 absent = article retiré lors de la recodification.
 
     - id: Q030
       theme: travail
@@ -618,7 +612,6 @@ benchmark:
         (opposabilité) sauf pour les métiers en tension ou les catégories exemptées
         (titulaires d'un master en France, passeport talent, etc.).
       articles_cibles:
-        - "Art. L5221-2 Code du travail (autorisation de travail)"
         - "Art. L414-1 CESEDA (droit au travail attaché au titre de séjour)"
         - "Art. L421-4 CESEDA (exemption opposabilité pour diplômés master France)"
       # Pas d'erreur majeure. Référence code du travail correct.
@@ -640,9 +633,10 @@ benchmark:
         bilatéral. La DREETS apprécie et peut dispenser de l'opposabilité.
       articles_cibles:
         - "Art. L414-13 (opposabilité de la situation de l'emploi)"
-        - "Art. L414-14 (exceptions à l'opposabilité)"
         - "Art. L421-4 (exception pour diplômés master en France)"
-      # Pas d'erreur majeure sur les articles cités.
+      # CORRECTION : L414-14 dans notre PDF = sanction de l'employeur qui a fait l'objet
+      # d'une OQTF (pas de rapport avec les exceptions à l'opposabilité).
+      # L414-13 ✓ (opposabilité marché emploi), L421-4 ✓ (exception master).
 
     # ────────────────────────────────────────────────
     # QUESTIONS TRANSVERSALES / PROCÉDURALES
