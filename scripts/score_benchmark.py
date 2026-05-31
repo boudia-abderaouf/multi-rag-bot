@@ -37,7 +37,9 @@ def _normalize_article(raw: str) -> str:
     # ex : "L414-1 CESEDA", "21-7 Code civil", "L5221-2 Code du travail", "L221-2-2 CASF"
     s = re.sub(r"(?i)\s+(?:CESEDA|Code\b[^.\d\n]*|CASF|CASPE)\b.*$", "", s.strip())
     s = re.sub(r"[.\s]", "", s)                        # retire les . et espaces restants
-    return s.lower()
+    # Ignore le préfixe L/R/D : L413-14 == R413-14 (même article, préfixe législatif vs réglementaire)
+    s = re.sub(r"^[lrd]", "", s.lower())
+    return s
 
 
 _RANGE_RE = re.compile(
@@ -81,7 +83,12 @@ def score_record(record: dict) -> dict:
         cibles_raw.extend(_expand_article_range(art))
     cibles_norm = [_normalize_article(a) for a in cibles_raw]
 
-    retrieved = _retrieved_set(record.get("retrieved_chunks") or [])
+    # Si generation_chunks est présent (reranking activé), on mesure le rappel
+    # sur les chunks effectivement passés au LLM (top-K après rerank).
+    # Sinon on utilise retrieved_chunks (tous les chunks récupérés).
+    gen = record.get("generation_chunks")
+    chunks_to_score = gen if gen is not None else (record.get("retrieved_chunks") or [])
+    retrieved = _retrieved_set(chunks_to_score)
     cited = _cited_in_text(record.get("answer") or "")
     has_answer = record.get("answer") is not None
 

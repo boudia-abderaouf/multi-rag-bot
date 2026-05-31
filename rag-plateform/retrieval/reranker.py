@@ -91,13 +91,18 @@ class Reranker:
     # ── Backends ─────────────────────────────────────────────────────────────
 
     def _rerank_score(self, hits: list, top_k: int) -> list:
-        """Tri simple par score décroissant (RRF ou cosinus).
+        """Prend les top_k premiers de la liste en respectant l'ordre RRF existant.
 
-        Avantages : 0 coût, 0 latence supplémentaire.
-        Limite    : le score RRF reflète la consensus inter-requêtes mais pas
-                    la pertinence fine par rapport à la question exacte.
+        IMPORTANT : ne pas re-trier par h.score !
+        La liste retournée par retrieve_for_domain() est :
+          - [0:N]  → résultats RRF, triés par score RRF décroissant (0.001–0.05)
+          - [N:]   → extras (hits directs q0), score cosinus (0.4–0.9)
+        Re-trier par score ferait remonter tous les extras cosinus devant les
+        résultats RRF, détruisant le consensus multi-requêtes.
+        Les N premiers sont déjà les meilleurs choix (apparus en tête dans
+        plusieurs requêtes : originale + variantes + HyDE).
         """
-        return sorted(hits, key=lambda h: h.score, reverse=True)[:top_k]
+        return hits[:top_k]
 
     def _rerank_cross_encoder(self, query: str, hits: list, top_k: int) -> list:
         """Score chaque chunk avec un cross-encoder (question, chunk) → pertinence.
