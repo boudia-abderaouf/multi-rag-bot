@@ -1,0 +1,720 @@
+benchmark:
+  domain: droit_etranger
+  version: "2.0"
+  created: "2026-05-21"
+  description: >
+    Benchmark corrigé et mis à jour (loi n°2024-42 du 26 janvier 2024 et loi n°2025-796 du 11 août 2025).
+    Sources vérifiées sur Légifrance.
+
+  # ================================================================
+  # CORRECTIONS APPORTÉES (résumé global)
+  # ================================================================
+  # Q001 : L413-1 ne porte PAS sur la CST ; bons articles = L411-3 + L413-2 (CIR)
+  # Q002 : L311-1 est l'ancien numéro (avant recodification 2021) ; bon article = L411-1 + L411-3
+  # Q003 : L433-1/2/3 concernent le renouvellement, PAS la délivrance de la CR ;
+  #        carte résident de droit commun = L426-17 (résident LDU) ; conditions générales = L413-7
+  # Q004 : L421-1 = CST salarié, L421-7 = salarié détaché ; bon article = L433-4
+  # Q005 : L431-2 et L431-3 (post-recodification) ≠ récépissé de renouvellement ;
+  #        le récépissé est régi par R.431-12 ; L431-2 post-2021 traite de l'asile concurrent
+  # Q013 : délais de recours OQTF modifiés : 30 jours (général) / 96 h (rétention)
+  # Q014 : CHANGEMENT MAJEUR : durée initiale ≠ 48h depuis la loi 2024-42 et loi 2025-796 ;
+  #        placement initial = 96h ; prolongation 1 = 26 jours ; durée totale = 90 jours
+  #        Contrôle : magistrat du siège TJ, non plus JLD
+  # Q015 : CHANGEMENT MAJEUR : loi 2024-42 art.37 a supprimé TOUTES les protections contre OQTF
+  #        sauf pour les mineurs (L611-3 nouvelle rédaction). Toute la liste est obsolète.
+  # Q022 : L423-21 et L423-22 numéros à préciser (résultats mitigés) ; conditions divorce correctes
+  # Q028 : L435-3 correct ; L423-22 mal cité
+  # ================================================================
+
+  themes:
+    - sejour
+    - asile
+    - eloignement
+    - regularisation
+    - famille
+    - nationalite
+    - mineurs
+    - travail
+
+  questions:
+
+    # ────────────────────────────────────────────────
+    # THÈME : séjour
+    # ────────────────────────────────────────────────
+
+    - id: Q001
+      theme: sejour
+      difficulte: simple
+      question: "Qu'est-ce qu'une carte de séjour temporaire et quelle est sa durée maximale de validité ?"
+      attente_minimale: >
+        La réponse doit mentionner qu'il s'agit d'un titre d'une durée
+        maximale d'un an, renouvelable (dans la limite de trois renouvellements
+        consécutifs depuis la loi du 26 janvier 2024), délivré par le préfet,
+        et que le premier titre donne lieu à un parcours d'intégration (CIR).
+      articles_cibles:
+        - "Art. L411-3 (durées des titres)"
+        - "Art. L413-2 (CIR à la première délivrance)"
+        - "Art. L433-1-1 (limite de trois renouvellements, loi 2024)"
+      # ERREUR ORIGINALE : L413-1 est relatif à l'information préalable dans le pays d'origine
+      # (parcours d'intégration), non à la définition ou durée de la CST.
+      # L411-3 est l'article qui fixe la durée maximale d'un an.
+
+    - id: Q002
+      theme: sejour
+      difficulte: simple
+      question: "Qu'est-ce qu'un visa de long séjour (VLS) et en quoi diffère-t-il d'un titre de séjour ?"
+      attente_minimale: >
+        La réponse doit indiquer que le VLS est délivré par les autorités
+        diplomatiques et consulaires pour un séjour supérieur à 3 mois et d'une
+        durée maximale d'un an (art. L411-3). Certains VLS (dits « valant titre
+        de séjour ») confèrent les droits attachés à une CST ou CSP sans
+        nécessiter de conversion immédiate (art. L411-1 2°). Le VLS simple
+        oblige à solliciter un titre de séjour à l'arrivée.
+      articles_cibles:
+        - "Art. L411-1 (liste des documents de séjour, dont VLS)"
+        - "Art. L411-3 (durée maximale un an)"
+        - "Art. L312-2 (VLS valant titre de séjour)"
+      # ERREUR ORIGINALE : L311-1 est l'ancien numérotation CESEDA avant la recodification
+      # par l'ordonnance n°2020-1733 du 16 décembre 2020 (en vigueur au 1er mai 2021).
+      # Le CESEDA actuel place ces dispositions aux art. L411-1 et suivants.
+
+    - id: Q003
+      theme: sejour
+      difficulte: moyen
+      question: "Quelles sont les conditions générales pour obtenir une carte de résident ?"
+      attente_minimale: >
+        La réponse doit couvrir au moins : résidence régulière ininterrompue
+        d'au moins 5 ans en France (art. L426-17), ressources stables et
+        suffisantes, assurance maladie, intégration républicaine (art. L413-7),
+        absence de menace grave pour l'ordre public. Le préfet apprécie les
+        critères d'intégration (langue française, respect des valeurs de la
+        République). La carte de résident peut aussi être obtenue de plein
+        droit dans des cas spécifiques (conjoint de Français, réfugié, etc.).
+      articles_cibles:
+        - "Art. L426-17 (CR longue durée-UE, 5 ans de résidence régulière)"
+        - "Art. L413-7 (condition d'intégration républicaine)"
+        - "Art. L433-2 (renouvellement CR)"
+      # ERREUR ORIGINALE : L433-1 à L433-3 concernent les CONDITIONS DE RENOUVELLEMENT
+      # des titres de séjour, non la délivrance initiale de la carte de résident.
+      # Les conditions générales d'obtention d'une CR sont à l'art. L426-17 (CR LDU)
+      # et L413-7 pour l'intégration. La formulation « résidence depuis 5 ans »
+      # correspond à la carte résident LDU (L426-17), non à une CR générale unique.
+
+    - id: Q004
+      theme: sejour
+      difficulte: moyen
+      question: "Dans quelles conditions un étranger peut-il obtenir une carte de séjour pluriannuelle ?"
+      attente_minimale: >
+        La réponse doit mentionner : après au moins une première année de
+        séjour régulier au titre d'une CST ou d'un VLS conférant les droits
+        d'une CST, sous réserve : (1) assiduité et sérieux dans le CIR,
+        (2) résultat suffisant à l'examen civique, (3) niveau de français
+        suffisant (au moins A2 oral et écrit depuis le 1er janvier 2026),
+        (4) maintien des conditions du titre précédent. Durée jusqu'à 4 ans.
+      articles_cibles:
+        - "Art. L433-4 (conditions de délivrance de la CSP après premier titre)"
+        - "Art. L411-3 (durée maximale 4 ans pour la CSP)"
+      # ERREUR ORIGINALE : L421-1 concerne la CST « salarié » CDI (1 an), non la
+      # carte pluriannuelle générale. L421-7 concerne le salarié détaché ICT.
+      # L'article régissant la CSP après premier titre est L433-4.
+
+    - id: Q005
+      theme: sejour
+      difficulte: difficile
+      question: >
+        Un étranger titulaire d'une carte de séjour temporaire dont la demande
+        de renouvellement est en cours peut-il travailler en attendant la décision
+        du préfet ? Sur quelle base juridique ?
+      attente_minimale: >
+        La réponse doit mentionner le récépissé de dépôt de demande de
+        renouvellement (art. R.431-12 CESEDA) qui autorise la présence sur
+        le territoire et, si le titre précédent portait la mention de travail
+        autorisé, permet de continuer à exercer une activité professionnelle
+        pendant l'instruction. L'attestation de prolongation d'instruction
+        (R.431-15-1) produit les mêmes effets pour les demandes dématérialisées.
+      articles_cibles:
+        - "Art. R.431-12 (récépissé, autorisation de présence et de travail)"
+        - "Art. R.431-15-1 (attestation dématérialisée)"
+        - "Art. L431-3 (effet du document provisoire sur le droit au séjour)"
+      # ERREUR ORIGINALE : L431-2 (version post-recodification 2021) traite de l'invitation
+      # à déposer un titre de séjour adressée au demandeur d'asile, NON du récépissé de
+      # renouvellement. L431-3 traite de l'effet des documents provisoires.
+      # Le mécanisme du récépissé est surtout réglementaire : R.431-12.
+
+    # ────────────────────────────────────────────────
+    # THÈME : asile
+    # ────────────────────────────────────────────────
+
+    - id: Q006
+      theme: asile
+      difficulte: simple
+      question: "Qu'est-ce que l'OFPRA et quel est son rôle dans la procédure d'asile ?"
+      attente_minimale: >
+        La réponse doit identifier l'OFPRA comme l'Office français de protection
+        des réfugiés et apatrides, chargé d'examiner les demandes d'asile en
+        première instance et de reconnaître le statut de réfugié, la protection
+        subsidiaire ou le statut d'apatride.
+      articles_cibles:
+        - "Art. L121-7 (missions de l'OFPRA)"
+        - "Art. L521-1 (examen de la demande d'asile par l'OFPRA)"
+      # CORRECTION : L121-1 dans notre PDF = OFII (immigration/intégration), pas OFPRA.
+      # L121-7 est l'article qui définit l'OFPRA dans notre PDF.
+
+    - id: Q007
+      theme: asile
+      difficulte: simple
+      question: "Qu'est-ce que la protection subsidiaire et à qui s'adresse-t-elle ?"
+      attente_minimale: >
+        La réponse doit préciser que la protection subsidiaire est accordée
+        aux personnes ne remplissant pas les critères de la Convention de Genève
+        mais risquant, en cas de retour, une peine de mort, des actes de torture
+        ou des traitements inhumains et dégradants, ou des violences graves
+        dans le cadre d'un conflit armé.
+      articles_cibles:
+        - "Art. L512-1 (définition de la protection subsidiaire)"
+        - "Art. L512-2 (motifs : peine de mort, torture, violence de conflit armé)"
+      # Pas d'erreur majeure sur les articles cités.
+
+    - id: Q008
+      theme: asile
+      difficulte: moyen
+      question: "Comment un demandeur d'asile peut-il contester un refus de l'OFPRA ?"
+      attente_minimale: >
+        La réponse doit mentionner le recours devant la Cour nationale du
+        droit d'asile (CNDA), le délai de recours d'un mois à compter de la
+        notification du refus, et le caractère suspensif du recours sauf en
+        procédure accélérée ou irrecevabilité.
+      articles_cibles:
+        - "Art. L532-1 (recours devant la CNDA)"
+        - "Art. L532-4 (délai et procédure CNDA)"
+      # CORRECTION : L571-1 dans notre PDF = procédure Dublin (enregistrement demande
+      # quand autre État compétent), PAS l'effet suspensif du recours CNDA.
+      # L'effet suspensif est un principe procédural mentionné dans L532-1/L532-4.
+
+    - id: Q009
+      theme: asile
+      difficulte: moyen
+      question: "Quelles sont les obligations d'un demandeur d'asile pendant l'instruction de sa demande ?"
+      attente_minimale: >
+        La réponse doit mentionner l'obligation de se présenter aux convocations
+        de l'OFPRA, de déclarer et communiquer tout changement d'adresse, de
+        se tenir à disposition de l'administration, et les conséquences d'un
+        manquement (clôture de la demande). Depuis la loi 2024-42, un demandeur
+        d'asile présentant une menace grave à l'ordre public peut aussi être
+        assigné à résidence ou placé en rétention (art. L523-1 – mais attention :
+        la rétention hors mesure d'éloignement a été censurée par le Conseil
+        constitutionnel, décision n°2025-1140 QPC du 23 mai 2025).
+      articles_cibles:
+        - "Art. L523-1 (obligations, assignation et rétention du DA)"
+        - "Art. L523-2 (clôture de la demande en cas de manquement)"
+      # Pas d'erreur majeure sur les articles cités.
+
+    - id: Q010
+      theme: asile
+      difficulte: difficile
+      question: >
+        Quelles sont les conditions cumulatives permettant de reconnaître
+        le statut de réfugié au sens de la Convention de Genève de 1951 ?
+      attente_minimale: >
+        La réponse doit couvrir : crainte fondée de persécution, fondée sur
+        l'un des 5 motifs (race, religion, nationalité, appartenance à un groupe
+        social, opinions politiques), incapacité ou refus de protection du pays
+        d'origine (ou du pays de résidence habituelle pour les apatrides),
+        et l'impossibilité de bénéficier de la protection d'un autre État.
+      articles_cibles:
+        - "Art. L511-1 (définition du réfugié, Convention de Genève)"
+        - "Art. L512-1 (protection subsidiaire, à distinguer)"
+      # Pas d'erreur majeure sur les articles cités.
+
+    - id: Q011
+      theme: asile
+      difficulte: difficile
+      question: >
+        Dans quelles circonstances l'OFPRA peut-il mettre fin au statut de
+        réfugié d'une personne déjà protégée ?
+      attente_minimale: >
+        La réponse doit mentionner les clauses de cessation (changement de
+        circonstances dans le pays d'origine rendant la protection inutile),
+        les clauses d'exclusion a posteriori (crime grave de droit commun,
+        actes contraires aux buts et principes des Nations Unies), et le droit
+        à être entendu avant toute décision.
+      articles_cibles:
+        - "Art. L511-7 (clauses de cessation du statut de réfugié)"
+        - "Art. L511-8 (clauses d'exclusion)"
+      # Pas d'erreur majeure sur les articles cités.
+
+    # ────────────────────────────────────────────────
+    # THÈME : éloignement
+    # ────────────────────────────────────────────────
+
+    - id: Q012
+      theme: eloignement
+      difficulte: simple
+      question: "Qu'est-ce qu'une obligation de quitter le territoire français (OQTF) ?"
+      attente_minimale: >
+        La réponse doit définir l'OQTF comme une décision administrative du
+        préfet ordonnant à un étranger de quitter la France, en précisant
+        qu'elle fixe généralement le pays de destination et un délai de départ
+        volontaire de 30 jours en principe (pouvant être réduit ou supprimé
+        dans certains cas).
+      articles_cibles:
+        - "Art. L611-1 (cas de prononcé de l'OQTF)"
+        - "Art. L612-1 (délai de départ volontaire, 30 jours par principe)"
+      # Pas d'erreur majeure sur les articles cités.
+
+    - id: Q013
+      theme: eloignement
+      difficulte: moyen
+      question: "Dans quel délai et devant quelle juridiction peut-on contester une OQTF ?"
+      attente_minimale: >
+        La réponse doit mentionner le tribunal administratif. Le délai de
+        recours est de 30 jours en principe (OQTF avec délai de départ
+        volontaire), ou de 96 heures en cas de placement en rétention
+        administrative ou d'assignation à résidence (depuis la loi du
+        26 janvier 2024 qui a porté ce délai de 48h à 96h). Le recours
+        est en principe suspensif.
+      articles_cibles:
+        - "Art. L614-1 (recours contre l'OQTF)"
+        - "Art. L614-2 (délai de recours OQTF)"
+      # CORRECTION : L614-5 et L614-6 sont des articles introduits par la loi 2024-42
+      # et n'existent pas dans notre PDF (version antérieure). Notre PDF contient
+      # L614-1 à L614-4 pour les délais de recours OQTF.
+
+    - id: Q014
+      theme: eloignement
+      difficulte: moyen
+      question: "Quelle est la durée maximale de rétention administrative et comment est-elle contrôlée ?"
+      attente_minimale: >
+        La réponse doit mentionner : placement initial de 96 heures décidé par
+        le préfet (art. L741-1, depuis la loi 2024-42 et confirmé par la loi
+        2025-796) ; première prolongation de 26 jours par le magistrat du siège
+        du tribunal judiciaire (TJ) sur requête de l'administration (art. L742-1
+        et L742-3) ; deuxième prolongation de 30 jours ; prolongation(s)
+        exceptionnelle(s) portant la durée totale à 90 jours dans les cas
+        ordinaires. Le contrôle est désormais exercé par le magistrat du siège
+        du TJ (et non plus le « JLD » désigné comme tel) depuis la réforme
+        judiciaire.
+      articles_cibles:
+        - "Art. L741-1 (placement initial 96h par le préfet)"
+        - "Art. L742-1 (prolongation judiciaire au-delà 96h)"
+        - "Art. L742-3 (durée prolongation 26 jours)"
+        - "Art. L742-4 (deuxième prolongation et suivantes)"
+      # CORRECTION :
+      # 1. L742-2 dans notre PDF = "maintenu à disposition de la justice" (audience), pas prolongation.
+      # 2. L742-5 n'existe pas dans notre PDF (on passe de L742-4 à L742-6).
+      # 3. L741-1 ✓ : placement initial 96h par le préfet.
+      # 4. L742-1 ✓ : maintien au-delà 96h par magistrat du siège TJ.
+      # 5. L742-3 ✓ : 26 jours de prolongation. L742-4 ✓ : 2e prolongation.
+
+    - id: Q015
+      theme: eloignement
+      difficulte: difficile
+      question: >
+        Dans quels cas précis un étranger ne peut-il pas faire l'objet d'une
+        mesure d'éloignement (immunités d'éloignement) ?
+      attente_minimale: >
+        ATTENTION - DROIT MODIFIÉ EN PROFONDEUR par la loi n°2024-42 du
+        26 janvier 2024 (article 37). La réponse doit préciser que la loi 2024
+        a supprimé TOUTES les anciennes protections absolues contre l'OQTF
+        (résidence depuis 13 ans, parent d'enfant français, conjoint de Français,
+        résidence régulière depuis 10 ans, etc.) à l'exception d'une seule :
+        l'étranger MINEUR DE 18 ANS demeure intégralement protégé contre l'OQTF
+        (art. L611-3 version 2024). Les anciennes catégories ne constituent plus
+        que des éléments de pondération, non des protections absolues.
+      articles_cibles:
+        - "Art. L611-3 (version issue de la loi n°2024-42 : seule protection = mineur)"
+      # ERREUR ORIGINALE MAJEURE : la liste fournie dans le benchmark correspond
+      # à l'ANCIENNE rédaction de L611-3 AVANT la loi du 26 janvier 2024.
+      # Depuis cette loi, l'article L611-3 ne protège plus que les mineurs de 18 ans.
+      # Toutes les autres catégories (arrivé avant 13 ans, parent d'enfant français,
+      # conjoint de Français depuis 3 ans, résidence régulière depuis 10 ans) ont été
+      # SUPPRIMÉES comme protections absolues. Cette question doit être reformulée
+      # ou l'attente_minimale doit intégrer cette évolution majeure.
+
+    - id: Q016
+      theme: eloignement
+      difficulte: difficile
+      question: >
+        Quelle est la distinction entre l'expulsion et l'OQTF, et dans quelles
+        circonstances l'expulsion administrative peut-elle être prononcée ?
+      attente_minimale: >
+        La réponse doit distinguer l'OQTF (mesure préfectorale visant à mettre
+        fin à un séjour irrégulier, art. L611-1) de l'expulsion (mesure pour
+        menace grave et actuelle pour l'ordre public, prononcée par le préfet
+        ou le ministre, pouvant toucher des étrangers en situation régulière,
+        art. L631-1). Depuis la loi 2024-42, les catégories d'étrangers
+        autrefois « quasi-protégés » contre l'expulsion peuvent désormais
+        y être soumis si la menace à l'ordre public est grave (art. L631-2
+        et L631-3 modifiés).
+      articles_cibles:
+        - "Art. L631-1 (expulsion pour menace grave à l'ordre public)"
+        - "Art. L631-2 (procédure d'expulsion)"
+        - "Art. L631-3 (extension du champ depuis loi 2024)"
+      # Pas d'erreur majeure sur les articles cités ; précision utile sur la loi 2024.
+
+    # ────────────────────────────────────────────────
+    # THÈME : régularisation
+    # ────────────────────────────────────────────────
+
+    - id: Q017
+      theme: regularisation
+      difficulte: simple
+      question: "Qu'est-ce que l'admission exceptionnelle au séjour (régularisation) ?"
+      attente_minimale: >
+        La réponse doit expliquer qu'il s'agit d'une procédure discrétionnaire
+        permettant au préfet de régulariser un étranger en situation irrégulière
+        sur la base de critères humanitaires ou de liens forts avec la France
+        (ancienneté, vie privée et familiale, travail), sans droit opposable
+        pour le demandeur.
+      articles_cibles:
+        - "Art. L435-1 (admission exceptionnelle au séjour, critère humanitaire)"
+        - "Art. L435-3 (régularisation des jeunes relevant ou ayant relevé de l'ASE)"
+      # Pas d'erreur majeure. L435-1 est correct.
+
+    - id: Q018
+      theme: regularisation
+      difficulte: moyen
+      question: >
+        Quels sont les principaux critères pris en compte pour une régularisation
+        par le travail en France ?
+      attente_minimale: >
+        La réponse doit couvrir : ancienneté de présence sur le territoire,
+        contrat de travail ou promesse d'embauche, régularité des cotisations
+        sociales et fiscales, éléments de vie privée et familiale, et le pouvoir
+        discrétionnaire du préfet. Depuis la loi 2024, des droits de timbre
+        spécifiques (« visa de régularisation ») s'appliquent.
+      articles_cibles:
+        - "Art. L435-1 (AES travail)"
+        - "Art. L435-3 (AES travail, jeunes relevant de l'ASE)"
+      # Pas d'erreur majeure sur les articles. L435-3 est dédié aux anciens MNA,
+      # non à la régularisation par le travail en général ; mieux vaut citer L435-1 seul.
+
+    - id: Q019
+      theme: regularisation
+      difficulte: difficile
+      question: >
+        Un étranger victime de violences conjugales en situation irrégulière
+        peut-il obtenir un titre de séjour autonome ? Quelles conditions
+        le CESEDA prévoit-il ?
+      attente_minimale: >
+        La réponse doit identifier la carte de séjour temporaire « vie privée
+        et familiale » délivrée aux victimes de violences conjugales (art. L425-1),
+        les éléments de preuve requis (dépôt de plainte, ordonnance de protection,
+        certificat médical), et le fait que le titre peut être accordé même si
+        le séjour était précaire ou irrégulier.
+      articles_cibles:
+        - "Art. L425-1 (victime de violences conjugales, CST VPF)"
+        - "Art. L425-3 (victime de traite ou proxénétisme, carte de résident)"
+      # Pas d'erreur majeure. L425-3 concerne les victimes de traite, à ne pas
+      # confondre avec L425-1 pour les violences conjugales.
+
+    # ────────────────────────────────────────────────
+    # THÈME : famille
+    # ────────────────────────────────────────────────
+
+    - id: Q020
+      theme: famille
+      difficulte: simple
+      question: "Qu'est-ce que le regroupement familial et qui peut en bénéficier ?"
+      attente_minimale: >
+        La réponse doit définir le regroupement familial comme la procédure
+        permettant à un étranger résidant régulièrement en France de faire
+        venir son conjoint et ses enfants mineurs de moins de 18 ans, et
+        mentionner les conditions minimales : titre de séjour d'au moins un an,
+        ressources stables au moins égales au SMIC, logement décent.
+      articles_cibles:
+        - "Art. L411-1 (bénéficiaires du regroupement familial)"
+        - "Art. L411-5 (conditions : ressources, logement)"
+      # ATTENTION : L411-1 dans la version recodifiée 2021 est l'article sur les
+      # documents de séjour. Les articles sur le regroupement familial se situent
+      # dans le Livre IV, Chapitre II (L421-1 à L424-23 anciens) recodifiés.
+      # Le regroupement familial est désormais aux art. L434-1 et suivants du CESEDA.
+      articles_cibles:
+        - "Art. L434-1 (droit au regroupement familial)"
+        - "Art. L434-7 (conditions : ressources, logement)"
+
+    - id: Q021
+      theme: famille
+      difficulte: moyen
+      question: >
+        Dans quelles conditions le regroupement familial peut-il être refusé
+        pour motif d'ordre public ou d'atteinte aux principes essentiels
+        de la vie familiale en France ?
+      attente_minimale: >
+        La réponse doit mentionner les motifs de refus : menace à l'ordre
+        public d'un membre de la famille, pratiques contraires aux principes
+        fondamentaux (polygamie), non-respect des conditions de ressources
+        ou de logement.
+      articles_cibles:
+        - "Art. L434-7 (conditions de refus)"
+        - "Art. L434-9 (polygamie comme motif de refus)"
+      # ERREUR ORIGINALE : L411-5 et L411-7 sont les anciens numéros ; le regroupement
+      # familial est désormais codifié aux art. L434-1 et suivants.
+
+    - id: Q022
+      theme: famille
+      difficulte: difficile
+      question: >
+        Un ressortissant étranger qui divorce après l'obtention d'une carte
+        de séjour dans le cadre du regroupement familial peut-il conserver
+        son titre de séjour ? Dans quelles conditions ?
+      attente_minimale: >
+        La réponse doit distinguer les cas selon l'ancienneté de la communauté
+        de vie et la présence d'enfants : maintien du titre si communauté de vie
+        d'au moins 3 ans avant la rupture (sauf violences), ou si des enfants
+        sont nés de l'union. En cas de violences conjugales ayant entraîné la
+        rupture, le retrait du titre est impossible quelle que soit l'ancienneté.
+      articles_cibles:
+        - "Art. L423-17 (rupture vie commune conjoint regroupement familial, retrait possible)"
+        - "Art. L423-18 (maintien titre malgré rupture en cas de violences conjugales)"
+      # CORRECTION : Dans notre PDF, L423-21 = carte de séjour pour jeune étranger
+      # résidant en France depuis l'âge de 13 ans. L423-22 = carte pour jeune confié à l'ASE.
+      # Les articles sur divorce/rupture après regroupement familial sont L423-17 et L423-18.
+
+    # ────────────────────────────────────────────────
+    # THÈME : nationalité et naturalisation
+    # ────────────────────────────────────────────────
+
+    - id: Q023
+      theme: nationalite
+      difficulte: simple
+      question: "Un enfant né en France de parents étrangers obtient-il automatiquement la nationalité française ?"
+      attente_minimale: >
+        La réponse doit préciser que la naissance en France ne confère pas
+        automatiquement la nationalité (pas de droit du sol pur), mais qu'un
+        enfant né en France de parents étrangers acquiert la nationalité
+        française de plein droit à ses 18 ans s'il a eu sa résidence habituelle
+        en France pendant au moins 5 ans depuis l'âge de 11 ans (art. 21-7 Code
+        civil). Il peut aussi demander cette acquisition par anticipation entre
+        13 et 18 ans. L'art. L426-1 du CESEDA prévoit la délivrance d'une carte
+        de résident à cet étranger avant sa majorité.
+      articles_cibles:
+        - "Art. L426-1 (carte de résident pour l'étranger appelé à devenir français)"
+      # Pas d'erreur majeure sur les articles cités.
+
+    # Q024 SUPPRIMÉE : la naturalisation par décret est régie exclusivement par les
+    # art. 21-15 à 21-30 du Code civil, hors CESEDA. Pas d'articles CESEDA à tester.
+
+    - id: Q025
+      theme: nationalite
+      difficulte: difficile
+      question: "Quelles sont les conditions pour la reconnaissance du statut d'apatride et quelles protections en découlent ?"
+      attente_minimale: >
+        La réponse doit définir l'apatride (personne qu'aucun État ne considère
+        comme son ressortissant au titre de sa législation), mentionner l'OFPRA
+        comme autorité compétente pour la reconnaissance (art. L812-1), les
+        protections accordées (titre de séjour spécifique de 4 ans art. L424-9,
+        document de voyage, protection contre l'expulsion vers un pays qui ne le
+        reconnaît pas), et le lien avec la Convention de New York de 1954.
+      articles_cibles:
+        - "Art. L121-7 (OFPRA reconnaît le statut d'apatride)"
+        - "Art. L424-18 (titre de séjour du bénéficiaire du statut d'apatride)"
+      # CORRECTION : Dans notre PDF, L812-1 et L812-2 = contrôle des documents de circulation
+      # (pas de rapport avec les apatrides). L424-9 = protection subsidiaire (pas apatrides).
+      # L814-1 = confiscation du passeport (pas protection apatrides).
+      # Les vrais articles apatride dans notre PDF :
+      #   L121-7 : OFPRA reconnaît le statut d'apatride.
+      #   L424-18 : CSP "bénéficiaire du statut d'apatride" 4 ans (distinct de L424-9 = subsidiaire).
+
+    # ────────────────────────────────────────────────
+    # THÈME : mineurs étrangers
+    # ────────────────────────────────────────────────
+
+    - id: Q026
+      theme: mineurs
+      difficulte: simple
+      question: "Qu'est-ce qu'un mineur non accompagné (MNA) au sens du droit des étrangers ?"
+      attente_minimale: >
+        La réponse doit définir le MNA comme un mineur étranger présent
+        sur le territoire français sans représentant légal adulte sur ce territoire,
+        séparé de ses parents ou tuteurs. Il relève en priorité de la protection
+        de l'enfance (aide sociale à l'enfance, art. L221-2-2 CASF) et est
+        protégé contre toute mesure d'éloignement (art. L611-3 CESEDA).
+      articles_cibles:
+        - "Art. L341-1 (placement en zone d'attente)"
+        - "Art. L611-3 CESEDA (protection contre l'éloignement)"
+      # CORRECTION : L221-1 dans notre PDF = documents obligatoires pour entrer en France
+      # (pas de rapport avec la zone d'attente). La zone d'attente est au Livre III,
+      # L341-1 (placement initial en zone d'attente).
+
+    - id: Q027
+      theme: mineurs
+      difficulte: moyen
+      question: "Dans quels cas exceptionnels un mineur étranger peut-il être placé en zone d'attente ?"
+      attente_minimale: >
+        La réponse doit préciser que le mineur non accompagné en zone d'attente
+        bénéficie d'un administrateur ad hoc désigné par le parquet (art. L221-5
+        CESEDA), que le maintien est contrôlé par le magistrat du siège du TJ,
+        que l'intérêt supérieur de l'enfant prime (art. L221-1), et que la durée
+        doit être strictement limitée. Il ne peut pas être placé en rétention
+        administrative (art. L741-5).
+      articles_cibles:
+        - "Art. L341-1 (placement en zone d'attente, contrôle frontière)"
+        - "Art. L343-2 (administrateur ad hoc pour mineur non accompagné en ZA)"
+        - "Art. L741-5 (interdiction de rétention pour les mineurs)"
+      # CORRECTION : L221-1 = entrée en France (documents), pas zone d'attente.
+      # L221-5 n'existe pas dans notre PDF (notre PDF a seulement L221-1 et L221-2).
+      # Zone d'attente → L341-1 ; admin ad hoc mineur ZA → L343-2.
+
+    - id: Q028
+      theme: mineurs
+      difficulte: difficile
+      question: >
+        Un mineur étranger qui atteint sa majorité pendant son suivi par
+        l'aide sociale à l'enfance peut-il obtenir un titre de séjour ?
+        Quelles sont les conditions selon le CESEDA ?
+      attente_minimale: >
+        La réponse doit mentionner la carte de séjour temporaire délivrée
+        de plein droit aux jeunes majeurs confiés à l'ASE avant 16 ans ayant
+        suivi une formation professionnelle (art. L435-3 al. 1), ou à ceux
+        confiés entre 16 et 18 ans ayant un parcours sérieux d'intégration
+        (art. L435-3 al. 2 – pouvoir discrétionnaire du préfet), sous réserve
+        de l'absence de menace à l'ordre public. La loi 2024 a ajouté des
+        conditions sur l'absence d'OQTF pour l'accès au contrat jeune majeur.
+      articles_cibles:
+        - "Art. L435-3 al. 1 (droit au titre pour MNA confié avant 16 ans)"
+        - "Art. L435-3 al. 2 (admission pour MNA confié entre 16 et 18 ans)"
+      # ERREUR ORIGINALE : L423-22 ne traite pas des anciens MNA mais du maintien
+      # du titre du conjoint en cas de rupture de vie commune. A retirer.
+
+    # ────────────────────────────────────────────────
+    # THÈME : travail
+    # ────────────────────────────────────────────────
+
+    - id: Q029
+      theme: travail
+      difficulte: simple
+      question: "Qu'est-ce que la carte de séjour « talent » (anciennement « passeport talent ») ?"
+      attente_minimale: >
+        La réponse doit décrire la carte « passeport talent » comme une carte
+        de séjour pluriannuelle de 4 ans destinée aux profils qualifiés (depuis
+        la loi 2024 : 8 catégories recentrées — salarié qualifié, chercheur,
+        porteur de projet économique, dirigeant, profession médicale, artiste,
+        etc.), autorisant le travail sans démarche séparée et pouvant bénéficier
+        au conjoint (« passeport talent famille »).
+      articles_cibles:
+        - "Art. L421-9 (talent-salarié qualifié, carte passeport talent)"
+        - "Art. L421-11 (talent-carte bleue européenne, emploi hautement qualifié)"
+        - "Art. L421-14 (talent-chercheur, enseignant universitaire)"
+      # CORRECTION : La plage "L421-9 à L421-13" génère L421-10 qui n'existe pas dans
+      # notre PDF (notre PDF passe de L421-9 à L421-11). Remplacement par les articles
+      # individuels existants. L421-10 absent = article retiré lors de la recodification.
+
+    - id: Q030
+      theme: travail
+      difficulte: moyen
+      question: "Quelles sont les conditions pour qu'un étranger obtienne une autorisation de travail en France ?"
+      attente_minimale: >
+        La réponse doit mentionner : nécessité d'être titulaire d'un titre de
+        séjour l'autorisant à travailler (mention « salarié », « travailleur
+        temporaire », « passeport talent », etc.) OU d'une autorisation de travail
+        distincte délivrée par la DREETS ; vérification de la situation de l'emploi
+        (opposabilité) sauf pour les métiers en tension ou les catégories exemptées
+        (titulaires d'un master en France, passeport talent, etc.).
+      articles_cibles:
+        - "Art. L414-1 CESEDA (droit au travail attaché au titre de séjour)"
+        - "Art. L421-4 CESEDA (exemption opposabilité pour diplômés master France)"
+      # Pas d'erreur majeure. Référence code du travail correct.
+
+    - id: Q031
+      theme: travail
+      difficulte: difficile
+      question: >
+        Comment s'applique la règle de la « situation de l'emploi » (opposabilité)
+        pour le recrutement d'un ressortissant étranger hors UE, et quelles
+        sont les exceptions à cette règle ?
+      attente_minimale: >
+        La réponse doit expliquer que l'employeur doit justifier qu'aucun
+        candidat de l'espace économique européen n'est disponible pour le poste
+        proposé (opposabilité de la situation de l'emploi), sauf pour : les
+        métiers en tension listés par arrêté, les titulaires d'un master obtenu
+        en France (art. L421-4), les titulaires d'une carte passeport talent,
+        les salariés ICT détachés, et les ressortissants de pays liés par accord
+        bilatéral. La DREETS apprécie et peut dispenser de l'opposabilité.
+      articles_cibles:
+        - "Art. L414-13 (opposabilité de la situation de l'emploi)"
+        - "Art. L421-4 (exception pour diplômés master en France)"
+      # CORRECTION : L414-14 dans notre PDF = sanction de l'employeur qui a fait l'objet
+      # d'une OQTF (pas de rapport avec les exceptions à l'opposabilité).
+      # L414-13 ✓ (opposabilité marché emploi), L421-4 ✓ (exception master).
+
+    # ────────────────────────────────────────────────
+    # QUESTIONS TRANSVERSALES / PROCÉDURALES
+    # ────────────────────────────────────────────────
+
+    - id: Q032
+      theme: sejour
+      difficulte: moyen
+      question: >
+        Qu'est-ce qu'une interdiction de retour sur le territoire français (IRTF)
+        et comment peut-elle être contestée ?
+      attente_minimale: >
+        La réponse doit définir l'IRTF comme une mesure accessoire à l'OQTF
+        interdisant le retour pour une durée déterminée (pouvant aller jusqu'à
+        5 ans selon les cas, voire 10 ans en cas de menace grave à l'ordre public
+        depuis la loi 2024-42), mentionner qu'elle est prononcée notamment en
+        cas de non-respect du délai de départ volontaire ou d'absence de délai
+        de départ, et que le recours se fait devant le tribunal administratif
+        dans les délais de l'OQTF.
+      articles_cibles:
+        - "Art. L612-6 (IRTF accompagnant une OQTF sans délai de départ)"
+        - "Art. L612-8 (durée et conditions de l'IRTF)"
+      # Pas d'erreur majeure. Précision utile : durée portée à 10 ans possible depuis 2024.
+
+    - id: Q033
+      theme: asile
+      difficulte: difficile
+      question: >
+        Comment fonctionne le règlement Dublin III et dans quels cas la France
+        peut-elle être déclarée État membre responsable de l'examen d'une
+        demande d'asile ?
+      attente_minimale: >
+        La réponse doit expliquer que le règlement (UE) n°604/2013 (Dublin III)
+        détermine quel État membre est responsable d'examiner la demande, selon
+        une hiérarchie de critères (liens familiaux, visas délivrés, premier État
+        d'entrée irrégulière), la procédure de transfert, et les délais de
+        prescription (6 mois pour la prise en charge, 12 mois pour la reprise
+        en charge – passé ces délais la France devient responsable).
+      articles_cibles:
+        - "Art. L572-1 (procédure Dublin)"
+        - "Art. L572-2 (transfert vers l'État responsable)"
+        - "Art. L572-3 (recours contre la décision de transfert)"
+      # Pas d'erreur majeure sur les articles cités.
+
+    - id: Q034
+      theme: regularisation
+      difficulte: difficile
+      question: >
+        Un étranger en situation irrégulière depuis plus de 10 ans peut-il
+        se prévaloir de cette ancienneté pour obtenir de plein droit un titre
+        de séjour ? Quelles conditions s'appliquent ?
+      attente_minimale: >
+        La réponse doit préciser que la durée de présence seule ne crée pas
+        de droit automatique à un titre de séjour. Elle constitue un élément
+        dans une demande de régularisation discrétionnaire (art. L435-1).
+        Des critères complémentaires sont appréciés par le préfet : liens
+        privés et familiaux (art. L423-23), absence de menace à l'ordre public,
+        ressources stables. Il n'existe pas de « droit à la régularisation »
+        après 10 ans de présence irrégulière.
+      articles_cibles:
+        - "Art. L435-1 (admission exceptionnelle au séjour, caractère discrétionnaire)"
+        - "Art. L423-23 (vie privée et familiale, critère d'ancienneté de résidence)"
+      # Pas d'erreur majeure sur les articles cités.
+
+    - id: Q035
+      theme: eloignement
+      difficulte: moyen
+      question: >
+        Un étranger qui fait l'objet d'une OQTF peut-il demander un délai
+        de départ volontaire supérieur à 30 jours ? Dans quels cas ?
+      attente_minimale: >
+        La réponse doit mentionner que le préfet peut accorder un délai
+        supplémentaire allant jusqu'à 90 jours pour des motifs humanitaires
+        ou des circonstances particulières (état de santé, scolarisation des
+        enfants, démarches actives de retour, difficultés pratiques d'organisation
+        du départ), sur demande motivée de l'étranger. Ce délai prolongé est une
+        faculté préfectorale, non un droit.
+      articles_cibles:
+        - "Art. L612-2 (délai de départ volontaire, conditions d'octroi)"
+        - "Art. L612-3 (réduction ou suppression du délai)"
+      # Pas d'erreur majeure sur les articles cités.

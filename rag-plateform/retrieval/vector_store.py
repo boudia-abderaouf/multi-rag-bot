@@ -62,11 +62,10 @@ class QdrantVectorStore:
             wait=True,
         )
 
-    def replace_document(
+    def upsert_batch(
         self,
         *,
         collection_name: str,
-        doc_id: str,
         records: list[dict[str, Any]],
         vectors: list[list[float]],
     ) -> None:
@@ -78,28 +77,47 @@ class QdrantVectorStore:
             raise ValueError("Le nombre de chunks et de vecteurs ne correspond pas.")
 
         self.ensure_collection(collection_name, len(vectors[0]))
-        self.delete_document(collection_name=collection_name, doc_id=doc_id)
-
-        points = []
-        for record, vector in zip(records, vectors, strict=True):
-            payload = {
-                "doc_id": record["doc_id"],
-                "chunk_id": record["chunk_id"],
-                "chunk_index": record["chunk_index"],
-                "document_name": record["document_name"],
-                "collection": record["collection"],
-                "text": record["text"],
-                "metadata": record["metadata"],
-            }
-            points.append(
-                models.PointStruct(
-                    id=self.build_point_id(doc_id=doc_id, chunk_index=record["chunk_index"]),
-                    vector=vector,
-                    payload=payload,
-                )
+        points = [
+            models.PointStruct(
+                id=self.build_point_id(
+                    doc_id=record["doc_id"],
+                    chunk_index=record["chunk_index"],
+                ),
+                vector=vector,
+                payload={
+                    "doc_id": record["doc_id"],
+                    "chunk_id": record["chunk_id"],
+                    "chunk_index": record["chunk_index"],
+                    "document_name": record["document_name"],
+                    "collection": record["collection"],
+                    "text": record["text"],
+                    "metadata": record["metadata"],
+                },
             )
-
+            for record, vector in zip(records, vectors, strict=True)
+        ]
         self.client.upsert(collection_name=collection_name, wait=True, points=points)
+
+    def replace_document(
+        self,
+        *,
+        collection_name: str,
+        doc_id: str,
+        records: list[dict[str, Any]],
+        vectors: list[list[float]],
+        batch_size: int = 32,
+    ) -> None:
+        if not records:
+            return
+
+        self.delete_document(collection_name=collection_name, doc_id=doc_id)
+        for start in range(0, len(records), batch_size):
+            end = start + batch_size
+            self.upsert_batch(
+                collection_name=collection_name,
+                records=records[start:end],
+                vectors=vectors[start:end],
+            )
 
     def delete_document(self, *, collection_name: str, doc_id: str) -> None:
         if not self.client.collection_exists(collection_name):

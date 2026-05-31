@@ -1,0 +1,11 @@
+# Config minimale pour documents avec articles "Art. …" classiques
+article_boundary_pattern: "^\"?\\s*(Art(?:icle)?\\.\\s+.+?)(?:\\.-\\s*|\\s+|:\\s+)"
+
+article_id:
+  mode: group
+  group: 1
+
+prefix_article_id: true
+chunk_size: 800
+chunk_overlap: 100
+min_chunk_size: 20

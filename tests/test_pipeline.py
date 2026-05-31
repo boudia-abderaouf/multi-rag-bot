@@ -41,6 +41,8 @@ class FakeChunker:
 
 
 class FakeEmbedder:
+    batch_size = 32
+
     def __init__(self):
         self.calls = []
 
@@ -70,11 +72,20 @@ class FakeVectorStore:
     def is_available(self):
         return True
 
-    def replace_document(self, *, collection_name, doc_id, records, vectors):
+    def delete_document(self, *, collection_name, doc_id):
         self.calls.append(
             {
+                "method": "delete_document",
                 "collection_name": collection_name,
                 "doc_id": doc_id,
+            }
+        )
+
+    def upsert_batch(self, *, collection_name, records, vectors):
+        self.calls.append(
+            {
+                "method": "upsert_batch",
+                "collection_name": collection_name,
                 "records": records,
                 "vectors": vectors,
             }
@@ -142,7 +153,9 @@ class PipelineTests(unittest.TestCase):
 
         self.assertEqual(len(FakeVectorStore.instances), 1)
         store = FakeVectorStore.instances[0]
-        self.assertEqual(len(store.calls), 1)
-        self.assertEqual(store.calls[0]["collection_name"], "demo_collection")
+        self.assertEqual(len(store.calls), 2)
+        self.assertEqual(store.calls[0]["method"], "delete_document")
         self.assertEqual(store.calls[0]["doc_id"], "doc_demo")
-        self.assertEqual(len(store.calls[0]["vectors"]), 2)
+        self.assertEqual(store.calls[1]["method"], "upsert_batch")
+        self.assertEqual(store.calls[1]["collection_name"], "demo_collection")
+        self.assertEqual(len(store.calls[1]["vectors"]), 2)
